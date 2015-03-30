@@ -12,11 +12,16 @@ var plasticPages = require( plasticPagesDir + 'PlasticPages' )(
 
 //=============================================================================
 
+app.enable( 'strict routing' );
 app.use( favicon( __dirname + '/public/favicon.ico' ) );
 app.use( logfmt.requestLogger() );
 app.use( compression() );
-app.use( express.static( __dirname + '/public' ) );
+app.use( express.static( __dirname + '/public/' ) );
+
+app.all( '/Examples/PlasticPages',
+         function( req, res ) { res.redirect( '/Examples/PlasticPages/' ); } );
 app.use( '/Examples/PlasticPages/', plasticPages );
+
 app.use( getRequestData );
 app.use( echoRequestData );
 
