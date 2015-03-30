@@ -1,16 +1,22 @@
-/* Simple Express Server for Heroku */
+/* Web site for UW HTML5 APIs course */
 
 var express = require( 'express' );
 var favicon = require( 'serve-favicon' );
 var logfmt = require( 'logfmt' );
 var compression = require( 'compression' );
-
 var app = express();
+
+var plasticPagesDir = './server/Examples/PlasticPages/';
+var plasticPages = require( plasticPagesDir + 'PlasticPages' )(
+    express, app, plasticPagesDir );
+
+//=============================================================================
 
 app.use( favicon( __dirname + '/public/favicon.ico' ) );
 app.use( logfmt.requestLogger() );
 app.use( compression() );
 app.use( express.static( __dirname + '/public' ) );
+app.use( '/Examples/PlasticPages/', plasticPages );
 app.use( getRequestData );
 app.use( echoRequestData );
 
@@ -21,6 +27,7 @@ app.listen( port,
                 console.log( "Listening on port " + port );
             } );
 
+//=============================================================================
 
 // These functions gather and echo data posted from the client (if any).
 // That is good for experimenting with forms, AJAX, etc.
