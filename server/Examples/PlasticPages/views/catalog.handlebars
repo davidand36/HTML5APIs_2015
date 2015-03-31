@@ -1,0 +1,9 @@
+<h1>Our Catalog</h1>
+
+<div class="catalog">
+     {{#items}}
+     <a href="../item/{{id}}"><img src="{{thumbUrl}}" alt="{{name}}" /></a>
+     {{/items}}
+</div>
+
+{{{paginator numPages currentPage "../catalog/"}}}

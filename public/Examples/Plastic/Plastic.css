@@ -1,0 +1,47 @@
+body
+{
+    font-family: sans-serif;
+}
+
+
+header
+{
+    padding: 0.25em 2em 0.5em;
+    background: orange;
+    color: white
+}
+
+header h1
+{
+    font-size: 3em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+main
+{
+}
+
+
+.paginator
+{
+    display: block;
+    list-style: none;
+}
+
+.paginator li
+{
+    display: inline;
+    margin: 0 1em;
+}
+
+.paginator a
+{
+    text-decoration: none;
+}
+
+.paginator span
+{
+    color: red;
+}

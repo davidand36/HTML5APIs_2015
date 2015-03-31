@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1001,
+        "name": "Plastic Knife",
+        "image": "Knife.jpg",
+        "thumbnail": "thumbs/Knife.jpg",
+        "description": "A plastic knife. This is good for spreading stuff like peanut butter and jelly and cutting some stuff. Oleo, for instance. Steak? Probably not, but you're not eating steak, are you? Maybe Salisbury steak.",
+        "price": 9
+    },
+    {
+        "id": 1002,
+        "name": "Plastic Fork",
+        "image": "Fork.jpg",
+        "thumbnail": "thumbs/Fork.jpg",
+        "description": "A plastic fork. The essential utensil for picking up things you can poke. Or scoop, if they are not too runny.",
+        "price": 12
+    },
+    {
+        "id": 1003,
+        "name": "Plastic Spoon",
+        "image": "Spoon.jpg",
+        "thumbnail": "thumbs/Spoon.jpg",
+        "description": "A plastic spoon. Your best choice for soup. Cereal, too, if you insist on pouring milk on it. Otherwise you can eat it with your hands. Let's face it, you can eat lots of things with you hands, especially if no one is watching. But maintain some dignity. Use this spoon.",
+        "price": 10
+    },
+    {
+        "id": 1004,
+        "name": "Plastic Spork",
+        "image": "Spork.jpg",
+        "thumbnail": "thumbs/Spork.jpg",
+        "description": "A plastic \"spork\". Sort of a spoon, sort of a fork. Pokes better than a spoon. Scoops better than a fork.",
+        "price": 14
+    },
+    {
+        "id": 1005,
+        "name": "Paper Plate",
+        "image": "Plate.jpg",
+        "thumbnail": "thumbs/Plate.jpg",
+        "description": "A paper plate. Sure, you can eat off the ground. Most animals do. But a plate lets you carry your food around easily. And sometimes you have to put your food on something before it goes in the microwave. Not good for soup, though. Spring for a bowl.",
+        "price": 20
+    },
+    {
+        "id": 1006,
+        "name": "Paper Bowl",
+        "image": "Bowl.jpg",
+        "thumbnail": "thumbs/Bowl.jpg",
+        "description": "A paper bowl. Great for cereal, soup, ice cream, and similarly sloppy stuff.",
+        "price": 25
+    },
+    {
+        "id": 1007,
+        "name": "Paper Cup",
+        "image": "PaperCup.jpg",
+        "thumbnail": "thumbs/PaperCup.jpg",
+        "description": "A paper cup. For beverages, mainly.",
+        "price": 15
+    },
+    {
+        "id": 1008,
+        "name": "Plastic Beer Cup",
+        "image": "BeerCup.jpg",
+        "thumbnail": "thumbs/BeerCup.jpg",
+        "description": "A plastic cup. Party hearty with the big red cup. Optimized for beer, but fine for soda pop, OK for wine, liquor, or, really, anything you want to drink. This bad boy will last and last.",
+        "price": 50
+    },
+    {
+        "id": 1009,
+        "name": "Plastic Wine Glass",
+        "image": "WineGlass.png",
+        "thumbnail": "thumbs/WineGlass.jpg",
+        "description": "A plastic wine glass. Big date, parents in town, or other special occasion? Open the box (or did someone bring over a bottle?!) and break these out. Yes, you'll need more than one. There is no need to be pretentious if you are drinking alone, after all.",
+        "price": 60
+    },
+    {
+        "id": 1010,
+        "name": "Paper Napkin",
+        "image": "Napkin.jpg",
+        "thumbnail": "thumbs/Napkin.jpg",
+        "description": "A paper napkin. Sure, you can clean up with a paper towel, TP, or even a hose, but, really, that's what this is for.",
+        "price": 8
+    }
+]

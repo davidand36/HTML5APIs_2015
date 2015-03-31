@@ -7,8 +7,9 @@ var compression = require( 'compression' );
 var app = express();
 
 var plasticPagesDir = './server/Examples/PlasticPages/';
+var plasticPublicPath = '/Examples/Plastic/';
 var plasticPages = require( plasticPagesDir + 'PlasticPages' )(
-    express, app, plasticPagesDir );
+    express, app, plasticPagesDir, plasticPublicPath );
 
 //=============================================================================
 
