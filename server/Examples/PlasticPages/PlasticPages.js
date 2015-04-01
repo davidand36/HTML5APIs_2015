@@ -105,13 +105,17 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
         getCatalog( function( ) {
             var itemId = Number( request.params.itemId );
             var item = findItem( itemId );
-            response.render( 'item', {
-                baseUrl: baseUrl,
-                name: item.name,
-                description: item.description,
-                imageUrl: item.imageUrl,
-                price: item.price
-            } );
+            if ( item ) {
+                response.render( 'item', {
+                    baseUrl: baseUrl,
+                    name: item.name,
+                    description: item.description,
+                    imageUrl: item.imageUrl,
+                    price: item.price
+                } );
+            } else {
+                response.status( 404 ).send( 'No item with requested ID' );
+            }
         } );
     }
 
