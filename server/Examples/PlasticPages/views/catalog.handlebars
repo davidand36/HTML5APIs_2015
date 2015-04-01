@@ -2,8 +2,8 @@
 
 <div class="catalog">
      {{#each items}}
-     <a href="../item/{{id}}"><img src="{{thumbUrl}}" alt="{{name}}" /></a>
+     <a href="{{../baseUrl}}item/{{id}}"><img src="{{thumbUrl}}" alt="{{name}}" /></a>
      {{/each}}
 </div>
 
-{{{paginator numPages currentPage "../catalog/"}}}
+{{{paginator numPages currentPage "catalog/"}}}

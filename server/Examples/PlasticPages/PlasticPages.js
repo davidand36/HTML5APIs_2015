@@ -91,7 +91,8 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
             if ( i === curPage ) {
                 html += '<li><span>' + i + '</span></li>';
             } else {
-                html += '<li><a href="' + pageUrl + i + '">' + i + '</a></li>';
+                html += '<li><a href="' + baseUrl + pageUrl + i + '">' +
+                    i + '</a></li>';
             }
         }
         html += '</ul>';
