@@ -1,9 +1,9 @@
 <h1>Our Catalog</h1>
 
 <div class="catalog">
-     {{#items}}
+     {{#each items}}
      <a href="../item/{{id}}"><img src="{{thumbUrl}}" alt="{{name}}" /></a>
-     {{/items}}
+     {{/each}}
 </div>
 
 {{{paginator numPages currentPage "../catalog/"}}}

@@ -6,10 +6,13 @@ var logfmt = require( 'logfmt' );
 var compression = require( 'compression' );
 var app = express();
 
+var plasticDataDir = './server/Examples/Plastic/';
 var plasticPagesDir = './server/Examples/PlasticPages/';
-var plasticPublicPath = '/Examples/Plastic/';
+var plasticPagesViewsDir = plasticPagesDir + 'views/';
+var plasticPagesBaseUrl = '/Examples/PlasticPages/';
 var plasticPages = require( plasticPagesDir + 'PlasticPages' )(
-    express, app, plasticPagesDir, plasticPublicPath );
+    express, app,
+    plasticPagesViewsDir, plasticDataDir, plasticPagesBaseUrl );
 
 //=============================================================================
 

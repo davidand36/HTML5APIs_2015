@@ -60,7 +60,7 @@
         "name": "Plastic Beer Cup",
         "image": "BeerCup.jpg",
         "thumbnail": "thumbs/BeerCup.jpg",
-        "description": "A plastic cup. Party hearty with the big red cup. Optimized for beer, but fine for soda pop, OK for wine, liquor, or, really, anything you want to drink. This bad boy will last and last.",
+        "description": "A plastic cup. Party hearty with the big red cup. Optimized for beer, but fine for soda pop, wine, liquor, or, really, anything you want to drink. This bad boy will last and last.",
         "price": 50
     },
     {
@@ -68,8 +68,8 @@
         "name": "Plastic Wine Glass",
         "image": "WineGlass.png",
         "thumbnail": "thumbs/WineGlass.jpg",
-        "description": "A plastic wine glass. Big date, parents in town, or other special occasion? Open the box (or did someone bring over a bottle?!) and break these out. Yes, you'll need more than one. There is no need to be pretentious if you are drinking alone, after all.",
-        "price": 60
+        "description": "A plastic wine glass. Big date, parents in town, or other special occasion? Open the box (or did someone bring over a bottle?!) and break these out. Yes, you'll need more than one. If you are drinking alone, there is no point being pretentious, after all. A cup will be fine. Not a paper cup, though. That's pathetic.",
+        "price": 99
     },
     {
         "id": 1010,

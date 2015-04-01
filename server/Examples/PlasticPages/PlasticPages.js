@@ -5,10 +5,9 @@
   Middleware for PlasticPages Web site
 */
 
-module.exports = function( express, app, baseDir, publicDir ) {
+module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
 
     var router = express.Router();
-    var viewsDir = baseDir + 'views/';
     var handlebars = require( 'express-handlebars' )( {
         layoutsDir: viewsDir + 'layouts',
         defaultLayout: 'main'
@@ -34,7 +33,7 @@ module.exports = function( express, app, baseDir, publicDir ) {
     //-------------------------------------------------------------------------
 
     function getCatalog( callback ) {
-        var catalogPath = baseDir + 'Catalog.json';
+        var catalogPath = dataDir + 'Catalog.json';
         var i, len, item;
         if ( catalog ) {
             callback( catalog );
@@ -46,8 +45,8 @@ module.exports = function( express, app, baseDir, publicDir ) {
                     catalog = JSON.parse( data );
                     for ( i = 0, len = catalog.length; i < len; ++i ) {
                         item = catalog[ i ];
-                        item.imageUrl = publicDir + 'images/' + item.image;
-                        item.thumbUrl = publicDir + 'images/' + item.thumbnail;
+                        item.imageUrl = baseUrl + 'images/' + item.image;
+                        item.thumbUrl = baseUrl + 'images/' + item.thumbnail;
                     }
                     callback( catalog );
                 }
@@ -59,7 +58,7 @@ module.exports = function( express, app, baseDir, publicDir ) {
 
     function doHomePage( request, response ) {
         response.render( 'home', {
-            publicDir: publicDir
+            baseUrl: baseUrl
         } );
     }
 
@@ -73,7 +72,7 @@ module.exports = function( express, app, baseDir, publicDir ) {
             var start = (page - 1) * pageSize; //1-based page numbering
             var pageItems = catalog.slice( start, start + pageSize );
             response.render( 'catalog', {
-                publicDir: publicDir,
+                baseUrl: baseUrl,
                 items: pageItems,
                 currentPage: page,
                 numPages: numPages,
@@ -106,7 +105,7 @@ module.exports = function( express, app, baseDir, publicDir ) {
             var itemId = Number( request.params.itemId );
             var item = findItem( itemId );
             response.render( 'item', {
-                publicDir: publicDir,
+                baseUrl: baseUrl,
                 name: item.name,
                 description: item.description,
                 imageUrl: item.imageUrl,
