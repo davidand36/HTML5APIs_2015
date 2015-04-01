@@ -140,24 +140,6 @@ function showCatalogPage( page ) {
     }
 
 }
-
-//==============================================================================
-
-function paginator( numPages, curPage ) {
-    var html = '<ul class="paginator">';
-    //Page numbering is 0-based internally, displayed as 1-based.
-    for ( var i = 0; i < numPages; ++i ) {
-        if ( i === curPage ) {
-            html += '<li><span>' + (i + 1) + '</span></li>';
-        } else {
-            html += '<li><a class="catalogLink" data-id="' + i +
-                '" href="#">' + (i + 1) + '</a></li>';
-        }
-    }
-    html += '</ul>';
-    return html;
-}
-
 //=============================================================================
 
 function showItemPage( itemId ) {
@@ -184,6 +166,24 @@ function showItemPage( itemId ) {
         return null;
     }
 }
+
+//==============================================================================
+
+function paginator( numPages, curPage, linkClass ) {
+    var html = '<ul class="paginator">';
+    //Page numbering is 0-based internally, displayed as 1-based.
+    for ( var i = 0; i < numPages; ++i ) {
+        if ( i === curPage ) {
+            html += '<li><span>' + (i + 1) + '</span></li>';
+        } else {
+            html += '<li><a class="' + linkClass + '" data-id="' + i +
+                '" href="#">' + (i + 1) + '</a></li>';
+        }
+    }
+    html += '</ul>';
+    return html;
+}
+
 
 //=============================================================================
 } )();
