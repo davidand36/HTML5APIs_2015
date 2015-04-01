@@ -40,8 +40,9 @@ function start( ) {
 
         //---------------------------------------------------------------------
 
-        function doHome( ) {
+        function doHome( evt ) {
             showHome( );
+            evt.preventDefault();
         }
 
         //---------------------------------------------------------------------
@@ -49,6 +50,7 @@ function start( ) {
         function doCatalog( evt ) {
             var page = Number( $(evt.currentTarget).attr( 'data-id' ) ) || 0;
             showCatalogPage( page );
+            evt.preventDefault();
         }
 
         //---------------------------------------------------------------------
@@ -56,6 +58,7 @@ function start( ) {
         function doItem( evt ) {
             var itemId = Number( $(evt.currentTarget).attr( 'data-id' ) ) || 0;
             showItemPage( itemId );
+            evt.preventDefault();
         }
     }
 }
