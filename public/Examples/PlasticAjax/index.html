@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Plasticware</title>
+    <link rel="stylesheet" href="Plastic.css">
+  </head>
+
+  <body>
+    <header>
+      <h1>Plasticware</h1>
+      <h2>Dining like nothing really matters</h2>
+      <hr />
+      <nav>
+        <ul>
+          <li><a class="homeLink" href="#">Home</a></li>
+          <li><a class="catalogLink" href="#" data-id="0">Catalog</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+    </main>
+
+
+    <script id="homeTemplate" type="text/x-handlebars-template">
+      <h1>Welcome</h1>
+      <p>
+        Welcome to Plasticware, your one-stop shop for disposable stuff to eat your food with.
+      </p>
+    </script>
+
+    <script id="catalogTemplate" type="text/x-handlebars-template">
+      <h1>Our Catalog</h1>
+      <div class="catalog">
+        {{#each items}}
+        <a class="itemLink" href="#" data-id="{{id}}"><img src="{{thumbUrl}}" alt="{{name}}" /></a>
+        {{/each}}
+      </div>
+      {{{paginator numPages curPage}}}
+    </script>
+
+    <script id="itemTemplate" type="text/x-handlebars-template">
+      <h1>{{name}}</h1>
+      <img src="{{imageUrl}}" alt="{{name}}" />
+      <p>
+        {{description}}
+      </p>
+      <p>
+        Price: {{price}}¢
+      </p>
+    </script>
+
+
+    <script src="lib/jquery-2.js"></script>
+    <script src="lib/handlebars.js"></script>
+    <script src="PlasticAjaxClient.js"></script>
+  </body>
+</html>

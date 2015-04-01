@@ -13,6 +13,10 @@ var plasticPagesBaseUrl = '/Examples/PlasticPages/';
 var plasticPages = require( plasticPagesDir + 'PlasticPages' )(
     express, app,
     plasticPagesViewsDir, plasticDataDir, plasticPagesBaseUrl );
+var plasticAjaxDir = './server/Examples/PlasticAjax/';
+var plasticAjaxBaseUrl = '/Examples/PlasticAjax/';
+var plasticAjax = require( plasticAjaxDir + 'PlasticAjaxServer' )(
+    express, plasticDataDir, plasticAjaxBaseUrl );
 
 //=============================================================================
 
@@ -25,6 +29,9 @@ app.use( express.static( __dirname + '/public/' ) );
 app.all( '/Examples/PlasticPages',
          function( req, res ) { res.redirect( '/Examples/PlasticPages/' ); } );
 app.use( '/Examples/PlasticPages/', plasticPages );
+app.all( '/Examples/PlasticAjax',
+         function( req, res ) { res.redirect( '/Examples/PlasticAjax/' ); } );
+app.use( '/Examples/PlasticAjax/', plasticAjax );
 
 app.use( getRequestData );
 app.use( echoRequestData );
