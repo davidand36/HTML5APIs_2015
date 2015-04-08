@@ -1,29 +1,29 @@
 {
-  "name": "SimpleExpressServerForHeroku",
+  "name": "HTML5APIs_2015",
   "version": "0.1.0",
-  "description": "A simple server based on Node.js and Express for deployment on Heroku",
+  "description": "Web site for my lectures, examples, etc., for the University of Washington PCE course on HTML5 Application Programming Interfaces.",
   "main": "web.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/davidand36/SimpleExpressServerForHeroku.git"
+    "url": "git@github.com:davidand36/HTML5APIs_2015.git"
   },
   "keywords": [
-    "express",
-    "static",
-    "heroku"
+    "HTML5",
+    "APIs",
+    "Lectures"
   ],
   "author": "David M. Anderson",
-  "license": "GPL 3.0",
+  "license": "AGPL 3",
   "bugs": {
-    "url": "https://github.com/davidand36/SimpleExpressServerForHeroku/issues"
+    "url": "https://github.com/davidand36/HTML5APIs_2015/issues"
   },
   "engines": {
     "node": "0.10.x"
   },
-  "homepage": "https://github.com/davidand36/SimpleExpressServerForHeroku",
+  "homepage": "https://github.com/davidand36/HTML5APIs_2015",
   "dependencies": {
     "compression": "^1.0.9",
     "express": "^4.7.2",
