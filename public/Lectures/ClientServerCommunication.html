@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 APIs: Client-Server Communication</title>
+    <link rel="stylesheet" href="Lecture.css" />
+  </head>
+  <body>
+
+    <h1 class="top">Client-Server Communication</h1>
+    
+    <div class="accordion h1">
+      <h1>Introduction</h1>
+      <div class="accordion h2">
+        <p>
+          The World-Wide Web uses a client-server model. The clients are, typically, browsers. They send requests over the Internet to Web servers for HTML, CSS, and JavaScript files and related data--images, videos, information obtained from databases or computations.
+        </p>
+        <p>
+          Clients and servers communicate using the Hypertext Transport Protocol (HTTP). This is a <em>stateless</em> protocol, meaning that each request is essentially independent of each other request.
+        </p>
+      </div>
+
+      <h1>Traditional Web pages</h1>
+      <div class="accordion h2">
+        <h2>Overview</h2>
+        <div>
+          <p>
+            In the traditional approach to Web sites, each link, most buttons, and each entry in the browser's history refers to a full Web page. The client requests, typically, an HTML file, which in turn lists the CSS, JavaScript, images, etc., it needs. These are all loaded into a new Web page. Clicking a link or pressing the Back button loads another full Web page. Submitting a form does likewise.
+          </p>
+          <p>
+            This is often fine, but can sometimes lead to a poor user experience. It also sometimes means that more data needs to be sent from the server than is really necessary. And it often means that most of the "business logic" needs to be done on the server, which may need to build full pages on the fly.
+          </p>
+        </div>
+        <h2>Example</h2>
+        <div>
+          Here is a little (fake) store implemented the traditional way: <a href="/Examples/PlasticPages/" target="_blank">Plastic Pages</a>.
+        </div>
+      </div>
+
+      <h1>AJAX</h1>
+      <div class="accordion h2">
+        <h2>Overview</h2>
+        <div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <button type="button" id="accordionToggle"></button>
+
+    <script src="../lib/jquery-2.js"></script>
+    <script src="../lib/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="Lectures.js"></script>
+  </body>
+</html>
