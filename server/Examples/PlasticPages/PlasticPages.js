@@ -34,6 +34,7 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
     //=========================================================================
 
     var catalog;
+    var items = { };
 
     //-------------------------------------------------------------------------
 
@@ -52,6 +53,7 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
                         item = catalog[ i ];
                         item.imageUrl = baseUrl + 'images/' + item.image;
                         item.thumbUrl = baseUrl + 'images/' + item.thumbnail;
+                        items[ item.id ] = item;
                     }
                     callback( catalog );
                 }
@@ -200,6 +202,7 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
 
         getCatalog( function( ) {
             cartTally = tallyCart( cart );
+            response.cookie( CART_COOKIE_NAME, JSON.stringify( {} ) );
 
             response.render( 'order', {
                 baseUrl: baseUrl,
@@ -215,12 +218,7 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
     //=========================================================================
 
     function findItem( id ) {
-        for ( var i = 0, len = catalog.length; i < len; ++i ) {
-            if ( catalog[ i ].id === id ) {
-                return catalog[ i ];
-            }
-        }
-        return null;
+        return items[ id ];
     }
 
     //-------------------------------------------------------------------------
