@@ -13,6 +13,7 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
         defaultLayout: 'main'
     } );
     var fs = require( 'fs' );
+    var CART_COOKIE_NAME = 'PlasticPages_cart';
 
     //=========================================================================
 
@@ -25,6 +26,10 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
     router.get( '/', doHomePage );
     router.get( '/catalog/:page', doCatalogPage );
     router.get( '/item/:itemId', doItemPage );
+    router.get( '/cart', doCartPage );
+    router.post( '/cart/add', doAddToCartPage );
+    router.get( '/checkout', doCheckoutPage );
+    router.post( '/order', doOrderPage );
 
     //=========================================================================
 
@@ -103,11 +108,12 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
 
     function doItemPage( request, response ) {
         getCatalog( function( ) {
-            var itemId = Number( request.params.itemId );
+            var itemId = request.params.itemId;
             var item = findItem( itemId );
             if ( item ) {
                 response.render( 'item', {
                     baseUrl: baseUrl,
+                    id: item.id,
                     name: item.name,
                     description: item.description,
                     imageUrl: item.imageUrl,
@@ -119,7 +125,94 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
         } );
     }
 
-    //-------------------------------------------------------------------------
+    //=========================================================================
+
+    function doAddToCartPage( request, response ) {
+        var cart = {};
+        var itemId;
+        var cartTally;
+
+        if ( request.cookies[ CART_COOKIE_NAME ] ) {
+            cart = JSON.parse( request.cookies[ 'PlasticPages_cart' ] );
+        }
+        itemId = request.body.itemId;
+        if ( cart[ itemId ] ) {
+            ++cart[ itemId ];
+        } else {
+            cart[ itemId ] = 1;
+        }
+        response.cookie( CART_COOKIE_NAME, JSON.stringify( cart ) );
+
+        getCatalog( function( ) {
+            cartTally = tallyCart( cart );
+
+            response.render( 'cart', {
+                baseUrl: baseUrl,
+                lineItems: cartTally.lineItems,
+                shipping: cartTally.shipping,
+                total: cartTally.total
+            } );
+        } );
+    }
+
+    //=========================================================================
+
+    function doCartPage( request, response ) {
+        var cart = {};
+        var cartTally;
+
+        if ( request.cookies[ CART_COOKIE_NAME ] ) {
+            cart = JSON.parse( request.cookies[ 'PlasticPages_cart' ] );
+        }
+
+        getCatalog( function( ) {
+            cartTally = tallyCart( cart );
+
+            response.render( 'cart', {
+                baseUrl: baseUrl,
+                lineItems: cartTally.lineItems,
+                shipping: cartTally.shipping,
+                total: cartTally.total
+            } );
+        } );
+    }
+
+    //=========================================================================
+
+    function doCheckoutPage( request, response ) {
+        response.render( 'checkout', {
+            baseUrl: baseUrl
+        } );
+    }
+
+    //=========================================================================
+
+    function doOrderPage( request, response ) {
+        var cart = {};
+        var customerName, customerAddress;
+        var cartTally;
+
+        if ( request.cookies[ CART_COOKIE_NAME ] ) {
+            cart = JSON.parse( request.cookies[ 'PlasticPages_cart' ] );
+        }
+        customerName = request.body.name;
+        customerAddress = request.body.address;
+
+        getCatalog( function( ) {
+            cartTally = tallyCart( cart );
+
+            response.render( 'order', {
+                baseUrl: baseUrl,
+                customerName: customerName,
+                addressLines: customerAddress.split( '\n' ),
+                lineItems: cartTally.lineItems,
+                shipping: cartTally.shipping,
+                total: cartTally.total
+            } );
+        } );
+    }
+
+    //=========================================================================
 
     function findItem( id ) {
         for ( var i = 0, len = catalog.length; i < len; ++i ) {
@@ -128,6 +221,43 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
             }
         }
         return null;
+    }
+
+    //-------------------------------------------------------------------------
+
+    function tallyCart( cart ) {
+        var itemId, item, quantity, linePrice;
+        var lineItems = [];
+        var shipping;
+        var total = 0;
+
+        for ( itemId in cart ) {
+            item = findItem( itemId );
+            quantity = cart[ itemId ];
+            linePrice = item.price * quantity;
+            lineItems.push( {
+                quantity: quantity,
+                name: item.name,
+                itemPrice: centsToDollars( item.price ),
+                linePrice: centsToDollars( linePrice )
+            } );
+            total += linePrice;
+        }
+        shipping = 500 * Math.ceil( total / 500 );
+        total += shipping;
+
+        return {
+            lineItems: lineItems,
+            shipping: centsToDollars( shipping ),
+            total: centsToDollars( total, true )
+        };
+    }
+
+    //-------------------------------------------------------------------------
+
+    function centsToDollars( cents, withSign ) {
+        var pre = withSign  ?  '$'  :  '';
+        return pre + (cents / 100).toFixed( 2 );
     }
 
     //=========================================================================

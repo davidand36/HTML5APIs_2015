@@ -56,7 +56,7 @@ function start( ) {
         //---------------------------------------------------------------------
 
         function doItem( evt ) {
-            var itemId = Number( $(evt.currentTarget).attr( 'data-id' ) ) || 0;
+            var itemId = $(evt.currentTarget).attr( 'data-id' );
             showItemPage( itemId );
             evt.preventDefault();
         }

@@ -8,3 +8,8 @@
 <p>
   Price: {{price}}¢
 </p>
+
+<form action="{{baseUrl}}cart/add" method="post">
+  <input type="hidden" name="itemId" value="{{id}}" />
+  <button type="submit">Add to Cart</button>
+</form>

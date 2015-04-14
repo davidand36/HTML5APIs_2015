@@ -4,6 +4,8 @@ var express = require( 'express' );
 var favicon = require( 'serve-favicon' );
 var logfmt = require( 'logfmt' );
 var compression = require( 'compression' );
+var bodyParser = require( 'body-parser' );
+var cookieParser = require( 'cookie-parser' );
 var app = express();
 
 var plasticDataDir = './server/Examples/Plastic/';
@@ -23,6 +25,8 @@ var plasticAjax = require( plasticAjaxDir + 'PlasticAjaxServer' )(
 app.use( favicon( __dirname + '/public/favicon.ico' ) );
 app.use( logfmt.requestLogger() );
 app.use( compression() );
+app.use( bodyParser.urlencoded( { extended: false } ) );
+app.use( cookieParser() );
 app.use( express.static( __dirname + '/public/' ) );
 
 app.use( '/Examples/PlasticPages/', plasticPages );

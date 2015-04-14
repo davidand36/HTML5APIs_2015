@@ -68,3 +68,24 @@ main
 {
     color: red;
 }
+
+
+table.cart
+{
+}
+
+table.cart th,
+table.cart th
+{
+    text-align: left;
+}
+
+.number
+{
+    text-align: right;
+}
+
+tr.total td
+{
+    font-weight: bold;
+}

@@ -1,0 +1,38 @@
+<h1>Your Cart</h1>
+
+<table class="cart">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Item Price</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each lineItems}}
+    <tr>
+      <td>{{name}}</td>
+      <td class="number">{{quantity}}</td>
+      <td class="number">{{itemPrice}}</td>
+      <td class="number">{{linePrice}}</td>
+    </tr>
+    {{/each}}
+    <tr>
+      <td>Shipping &amp; Handling</td>
+      <td></td>
+      <td></td>
+      <td class="number">{{shipping}}</td>
+    </tr>
+    <tr class="total">
+      <td>TOTAL</td>
+      <td></td>
+      <td></td>
+      <td class="number">{{total}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<form action="{{baseUrl}}checkout" method="get">
+  <button type="submit">Checkout</button>
+</form>
