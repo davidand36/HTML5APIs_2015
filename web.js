@@ -26,7 +26,6 @@ app.use( favicon( __dirname + '/public/favicon.ico' ) );
 app.use( logfmt.requestLogger() );
 app.use( compression() );
 app.use( bodyParser.urlencoded( { extended: false } ) );
-app.use( bodyParser.json( ) );
 app.use( cookieParser() );
 app.use( express.static( __dirname + '/public/' ) );
 

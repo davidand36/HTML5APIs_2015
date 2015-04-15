@@ -13,9 +13,9 @@ module.exports = function( express, dataDir, baseUrl ) {
 
     //=========================================================================
 
-    router.get( '/catalog', sendCatalog );
-    router.get( '/item', sendItem );
-    router.post( '/order', processOrder );
+    router.get( '/api/catalog', sendCatalog );
+    router.get( '/api/item', sendItem );
+    router.post( '/api/order', processOrder );
 
     //=========================================================================
 
@@ -62,7 +62,7 @@ module.exports = function( express, dataDir, baseUrl ) {
                 console.log( 'sendCatalog offset=', offset, ' limit=', limit,
                              ' (offset+limit)=', offset + limit,
                              ' items.length=', items.length );
-                response.send( JSON.stringify( items ) );
+                response.send( items );
             }
         } );
     }
@@ -75,7 +75,7 @@ module.exports = function( express, dataDir, baseUrl ) {
             var query = urlParts.query;
             var itemId = query.itemId;
             var item = items[ itemId ];
-            response.send( JSON.stringify( item ) );
+            response.send( item );
         } );
     }
 
@@ -95,13 +95,13 @@ module.exports = function( express, dataDir, baseUrl ) {
         getCatalog( function( ) {
             var cartTally = tallyCart( cart );
 
-            response.send( JSON.stringify( {
+            response.send( {
                 customerName: customerName,
                 addressLines: customerAddress.split( '\n' ),
                 lineItems: cartTally.lineItems,
                 shipping: cartTally.shipping,
                 total: cartTally.total
-            } ) );
+            } );
         } );
     }
 

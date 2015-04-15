@@ -201,13 +201,12 @@ function showOrderPage( ) {
     }
     formData.push( { name: 'cart', value: JSON.stringify( cart ) } );
 
-    $.post( baseUrl + 'order',
+    $.post( baseUrl + 'api/order',
             formData,
             'json' )
         .then(
             function( response ) {
-                var templateData = JSON.parse( response );
-                $('main').html( orderTemplate( templateData ) );
+                $('main').html( orderTemplate( response ) );
                 localStorage.removeItem( CART_STORAGE_NAME );
             },
             function( error ) {
@@ -222,7 +221,7 @@ function getCatalogSize( ) {
     if ( catalogSize ) {
         return $.when( catalogSize );
     } else {
-        return $.getJSON( baseUrl + 'catalog',
+        return $.getJSON( baseUrl + 'api/catalog',
                           {
                               getSize: true
                           } )
@@ -244,7 +243,7 @@ function getCatalogPage( page ) {
     if ( catalogPages[ page ] ) {
         return $.when( catalogPages[ page ] );
     } else {
-        return $.getJSON( baseUrl + 'catalog',
+        return $.getJSON( baseUrl + 'api/catalog',
                           {
                               offset: page * pageSize,
                               limit: pageSize
@@ -272,7 +271,7 @@ function getItem( itemId ) {
     if ( items[ itemId ] ) {
         return $.when( items[ itemId ] );
     } else {
-        return $.getJSON( baseUrl + 'item',
+        return $.getJSON( baseUrl + 'api/item',
                           {
                               itemId: itemId
                           } )
