@@ -14,10 +14,13 @@ module.exports = function( express, dataDir, baseUrl ) {
     //=========================================================================
 
     router.get( '/catalog', sendCatalog );
+    router.get( '/item', sendItem );
+    router.post( '/order', processOrder );
 
     //=========================================================================
 
     var catalog;
+    var items = { };
 
     //-------------------------------------------------------------------------
 
@@ -36,6 +39,7 @@ module.exports = function( express, dataDir, baseUrl ) {
                         item = catalog[ i ];
                         item.imageUrl = baseUrl + 'images/' + item.image;
                         item.thumbUrl = baseUrl + 'images/' + item.thumbnail;
+                        items[ item.id ] = item;
                     }
                     callback( catalog );
                 }
@@ -61,6 +65,81 @@ module.exports = function( express, dataDir, baseUrl ) {
                 response.send( JSON.stringify( items ) );
             }
         } );
+    }
+
+    //=========================================================================
+
+    function sendItem( request, response ) {
+        getCatalog( function( ) {
+            var urlParts = url.parse( request.url, true );
+            var query = urlParts.query;
+            var itemId = query.itemId;
+            var item = items[ itemId ];
+            response.send( JSON.stringify( item ) );
+        } );
+    }
+
+    //=========================================================================
+
+    function processOrder( request, response ) {
+        var customerName, customerAddress;
+        var cart = {};
+        var cartTally;
+
+        customerName = request.body.name;
+        customerAddress = request.body.address;
+        if ( request.body.cart ) {
+            cart = JSON.parse( request.body.cart );
+        }
+
+        getCatalog( function( ) {
+            var cartTally = tallyCart( cart );
+
+            response.send( JSON.stringify( {
+                customerName: customerName,
+                addressLines: customerAddress.split( '\n' ),
+                lineItems: cartTally.lineItems,
+                shipping: cartTally.shipping,
+                total: cartTally.total
+            } ) );
+        } );
+    }
+
+    //-------------------------------------------------------------------------
+
+    function tallyCart( cart ) {
+        var itemId, item, quantity, linePrice;
+        var lineItems = [];
+        var shipping;
+        var total = 0;
+
+        for ( itemId in cart ) {
+            item = items[ itemId ];
+            quantity = cart[ itemId ];
+            linePrice = item.price * quantity;
+            lineItems.push( {
+                quantity: quantity,
+                name: item.name,
+                itemPrice: centsToDollars( item.price ),
+                linePrice: centsToDollars( linePrice )
+            } );
+            total += linePrice;
+        }
+        shipping = 500 * Math.ceil( total / 500 );
+        total += shipping;
+
+        return {
+            lineItems: lineItems,
+            shipping: centsToDollars( shipping ),
+            total: centsToDollars( total, true )
+        };
+    }
+
+    //-------------------------------------------------------------------------
+
+    function centsToDollars( cents, withSign ) {
+        var pre = withSign  ?  '$'  :  '';
+        return pre + (cents / 100).toFixed( 2 );
     }
 
     //=========================================================================

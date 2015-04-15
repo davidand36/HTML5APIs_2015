@@ -13,12 +13,17 @@
 var homeTemplate = Handlebars.compile( $('#homeTemplate').html() );
 var catalogTemplate = Handlebars.compile( $('#catalogTemplate').html() );
 var itemTemplate = Handlebars.compile( $('#itemTemplate').html() );
+var cartTemplate = Handlebars.compile( $('#cartTemplate').html() );
+var checkoutTemplate = Handlebars.compile( $('#checkoutTemplate').html() );
+var orderTemplate = Handlebars.compile( $('#orderTemplate').html() );
 
 var baseUrl = window.location.pathname;
 var pageSize = 4;
 var numPages;
 var catalogSize;
 var catalogPages = [];
+var items = {};
+var CART_STORAGE_NAME = 'PlasticAjax_cart';
 
 //-----------------------------------------------------------------------------
 
@@ -37,6 +42,10 @@ function start( ) {
         $('body').on( 'click', '.homeLink', doHome );
         $('body').on( 'click', '.catalogLink', doCatalog );
         $('body').on( 'click', '.itemLink', doItem );
+        $('body').on( 'click', '.cartLink', doCart );
+        $('body').on( 'click', '.cartAddLink', doAddToCart );
+        $('body').on( 'click', '.checkoutLink', doCheckout );
+        $('body').on( 'click', '.orderLink', doOrder );
 
         //---------------------------------------------------------------------
 
@@ -60,6 +69,35 @@ function start( ) {
             showItemPage( itemId );
             evt.preventDefault();
         }
+
+        //---------------------------------------------------------------------
+
+        function doCart( evt ) {
+            showCartPage( );
+            evt.preventDefault();
+        }
+
+        //---------------------------------------------------------------------
+
+        function doAddToCart( evt ) {
+            var itemId = $(evt.currentTarget).attr( 'data-id' );
+            showAddToCartPage( itemId );
+            evt.preventDefault();
+        }
+
+        //---------------------------------------------------------------------
+
+        function doCheckout( evt ) {
+            showCheckoutPage( );
+            evt.preventDefault();
+        }
+
+        //---------------------------------------------------------------------
+
+        function doOrder( evt ) {
+            showOrderPage( );
+            evt.preventDefault();
+        }
     }
 }
 
@@ -73,7 +111,11 @@ function showHome( ) {
 
 function showCatalogPage( page ) {
     getCatalogSize( )
-        .then( getCatalogPage )
+        .then(
+            function( ) {
+                return getCatalogPage( page );
+            }
+        )
         .then(
             function( items ) {
                 if ( ! numPages ) {
@@ -87,84 +129,213 @@ function showCatalogPage( page ) {
                     } ) );
             }
         );
-    
-    //-------------------------------------------------------------------------
+}
 
-    function getCatalogSize( ) {
-        var deferred;
-        if ( catalogSize ) {
-            deferred = $.Deferred();
-            deferred.resolve( catalogSize );
-            return deferred.promise();
-        } else {
-            return $.getJSON( baseUrl + 'catalog',
+//=============================================================================
+
+function showItemPage( itemId ) {
+    getItem( itemId )
+        .then(
+            function( item ) {
+                $('main')
+                    .html( itemTemplate( item ) );
+            }
+        );
+}
+
+//=============================================================================
+
+function showCartPage( ) {
+    var cart = {};
+
+    if ( localStorage[ CART_STORAGE_NAME ] ) {
+        cart = JSON.parse( localStorage[ CART_STORAGE_NAME ] );
+    }
+
+    tallyCart( cart )
+        .then(
+            function( cartTally ) {
+                $('main')
+                    .html( cartTemplate( {
+                        cartEmpty: (cartTally.lineItems.length === 0),
+                        lineItems: cartTally.lineItems,
+                        shipping: cartTally.shipping,
+                        total: cartTally.total
+                    } ) );
+            }
+        );
+}
+
+//-----------------------------------------------------------------------------
+
+function showAddToCartPage( itemId ) {
+    var cart = {};
+    if ( localStorage[ CART_STORAGE_NAME ] ) {
+        cart = JSON.parse( localStorage[ CART_STORAGE_NAME ] );
+    }
+    if ( cart[ itemId ] ) {
+        ++cart[ itemId ];
+    } else {
+        cart[ itemId ] = 1;
+    }
+    localStorage[ CART_STORAGE_NAME ] = JSON.stringify( cart );
+
+    showCartPage( );
+}
+
+//=============================================================================
+
+function showCheckoutPage( ) {
+    $('main').html( checkoutTemplate() );
+}
+
+
+//=============================================================================
+
+function showOrderPage( ) {
+    var formData = $('#orderForm').serializeArray( );
+    var cart = {};
+    if ( localStorage[ CART_STORAGE_NAME ] ) {
+        var cart = JSON.parse( localStorage[ CART_STORAGE_NAME ] );
+    }
+    formData.push( { name: 'cart', value: JSON.stringify( cart ) } );
+
+    $.post( baseUrl + 'order',
+            formData,
+            'json' )
+        .then(
+            function( response ) {
+                var templateData = JSON.parse( response );
+                $('main').html( orderTemplate( templateData ) );
+                localStorage.removeItem( CART_STORAGE_NAME );
+            },
+            function( error ) {
+                console.log( 'Error submitting order', error );
+            }
+        );
+}
+
+//=============================================================================
+
+function getCatalogSize( ) {
+    if ( catalogSize ) {
+        return $.when( catalogSize );
+    } else {
+        return $.getJSON( baseUrl + 'catalog',
                           {
                               getSize: true
                           } )
-                .then(
-                    function( response ) {
-                        catalogSize = response;
-                        return response;
-                    },
-                    function( error ) {
-                        console.error( 'Error getting catalog size', error );
-                    }
-                );
-        }
+            .then(
+                function( response ) {
+                    catalogSize = response;
+                    return response;
+                },
+                function( error ) {
+                    console.error( 'Error getting catalog size', error );
+                }
+            );
     }
+}
 
-    //-------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
-    function getCatalogPage( ) {
-        var deferred;
-        if ( catalogPages[ page ] ) {
-            deferred = $.Deferred();
-            deferred.resolve( catalogPages[ page ] );
-            return deferred.promise();
-        } else {
-            return $.getJSON( baseUrl + 'catalog',
+function getCatalogPage( page ) {
+    if ( catalogPages[ page ] ) {
+        return $.when( catalogPages[ page ] );
+    } else {
+        return $.getJSON( baseUrl + 'catalog',
                           {
                               offset: page * pageSize,
                               limit: pageSize
                           } )
-                .then(
-                    function( response ) {
-                        catalogPages[ page ] = response;
-                        return response;
-                    },
-                    function( error ) {
-                        console.error( 'Error getting catalog list', error );
+            .then(
+                function( response ) {
+                    var i, len, item;
+                    catalogPages[ page ] = response;
+                    for ( i = 0, len = response.length; i < len; ++i ) {
+                        item = response[ i ];
+                        items[ item.id ] = item;
                     }
-                );
-        }
-    }
-
-}
-//=============================================================================
-
-function showItemPage( itemId ) {
-    var item = findItem( itemId );
-    $('main')
-        .html( itemTemplate( item ) );
-
-    //-------------------------------------------------------------------------
-
-    function findItem( itemId ) {
-        var p, numPages, catPage,
-            i, len, item;
-        for ( p = 0, numPages = catalogPages.length; p < numPages; ++p ) {
-            catPage = catalogPages[ p ];
-            if ( catPage ) {
-                for ( i = 0, len = catPage.length; i < len; ++i ) {
-                    item = catPage[ i ];
-                    if ( item.id === itemId ) {
-                        return item;
-                    }
+                    return response;
+                },
+                function( error ) {
+                    console.error( 'Error getting catalog list', error );
                 }
-            }
-        }
-        return null;
+            );
     }
+}
+
+//-----------------------------------------------------------------------------
+
+function getItem( itemId ) {
+    if ( items[ itemId ] ) {
+        return $.when( items[ itemId ] );
+    } else {
+        return $.getJSON( baseUrl + 'item',
+                          {
+                              itemId: itemId
+                          } )
+            .then(
+                function( response ) {
+                    items[ itemId ] = response;
+                    return response;
+                },
+                function( error ) {
+                    console.error( 'Error getting item', error );
+                }
+            );
+    }
+}
+
+//==============================================================================
+
+function tallyCart( cart ) {
+    var deferred = $.Deferred();
+    var itemPromises = [];
+    var itemId, item, quantity, linePrice;
+    var lineItems = [];
+    var shipping;
+    var total = 0;
+
+    for ( itemId in cart ) {
+        itemPromises.push( getItem( itemId ) );
+    }
+    whenAll( itemPromises )
+        .then(
+            function( ) {
+                for ( itemId in cart ) {
+                    item = items[ itemId ];
+                    quantity = cart[ itemId ];
+                    linePrice = item.price * quantity;
+                    lineItems.push( {
+                        quantity: quantity,
+                        name: item.name,
+                        itemPrice: centsToDollars( item.price ),
+                        linePrice: centsToDollars( linePrice )
+                    } );
+                    total += linePrice;
+                }
+                shipping = 500 * Math.ceil( total / 500 );
+                total += shipping;
+
+                deferred.resolve( {
+                    lineItems: lineItems,
+                    shipping: centsToDollars( shipping ),
+                    total: centsToDollars( total, true )
+                } );
+            },
+            function( error ) {
+                deferred.reject( error );
+            }
+        );
+    return deferred;
+}
+
+//-----------------------------------------------------------------------------
+
+function centsToDollars( cents, withSign ) {
+    var pre = withSign  ?  '$'  :  '';
+    return pre + (cents / 100).toFixed( 2 );
 }
 
 //==============================================================================
@@ -182,6 +353,28 @@ function paginator( numPages, curPage, linkClass ) {
     }
     html += '</ul>';
     return html;
+}
+
+//==============================================================================
+
+//Accepts array of deferreds. Resolves with array of results (or errors).
+
+function whenAll( deferreds )
+{
+    var deferred = $.Deferred();
+    $.when.apply( $, deferreds )
+        .then(
+            function done( )
+            {
+                deferred.resolve( Array.prototype.slice.call( arguments ) );
+            },
+            function fail( )
+            {
+                deferred.reject( Array.prototype.slice.call( arguments ) );
+            }
+        );
+
+    return deferred;
 }
 
 

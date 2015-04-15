@@ -15,6 +15,7 @@
         <ul>
           <li><a class="homeLink" href="#">Home</a></li>
           <li><a class="catalogLink" href="#" data-id="0">Catalog</a></li>
+          <li><a class="cartLink" href="#">Shopping Cart</a></li>
         </ul>
       </nav>
     </header>
@@ -22,6 +23,7 @@
     <main>
     </main>
 
+    <!--====================================================================-->
 
     <script id="homeTemplate" type="text/x-handlebars-template">
       <h1>Welcome</h1>
@@ -29,6 +31,8 @@
         Welcome to Plasticware, your one-stop shop for disposable stuff to eat your food with.
       </p>
     </script>
+
+    <!--====================================================================-->
 
     <script id="catalogTemplate" type="text/x-handlebars-template">
       <h1>Our Catalog</h1>
@@ -40,6 +44,8 @@
       {{{paginator numPages curPage "catalogLink"}}}
     </script>
 
+    <!--====================================================================-->
+
     <script id="itemTemplate" type="text/x-handlebars-template">
       <h1>{{name}}</h1>
       <img src="{{imageUrl}}" alt="{{name}}" />
@@ -49,8 +55,133 @@
       <p>
         Price: {{price}}¢
       </p>
+      <button type="button" class="cartAddLink" data-id="{{id}}">Add to Cart</button>
     </script>
 
+    <!--====================================================================-->
+
+    <script id="cartTemplate" type="text/x-handlebars-template">
+      <h1>Your Cart</h1>
+
+      {{#if cartEmpty}}
+      <p>
+        Your cart is empty. Add something to it.
+      </p>
+      {{else}}
+      <table class="cart">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Item Price</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each lineItems}}
+          <tr>
+            <td>{{name}}</td>
+            <td class="number">{{quantity}}</td>
+            <td class="number">{{itemPrice}}</td>
+            <td class="number">{{linePrice}}</td>
+          </tr>
+          {{/each}}
+          <tr>
+            <td>Shipping &amp; Handling</td>
+            <td></td>
+            <td></td>
+            <td class="number">{{shipping}}</td>
+          </tr>
+          <tr class="total">
+            <td>TOTAL</td>
+            <td></td>
+            <td></td>
+            <td class="number">{{total}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button type="button" class="checkoutLink">Checkout</button>
+      {{/if}}
+    </script>
+
+    <!--====================================================================-->
+
+    <script id="checkoutTemplate" type="text/x-handlebars-template">
+      <h1>Checkout</h1>
+
+      <form id="orderForm">
+        <label for="name">Name: </label>
+        <input type="text" name="name" required /><br />
+
+        <label for="address">Address: </label>
+        <textarea name="address" rows="2" required></textarea><br />
+
+        <button type="button" class="orderLink">Submit</button>
+      </form>
+    </script>
+
+    <!--====================================================================-->
+
+    <script id="orderTemplate" type="text/x-handlebars-template">
+      <h1>Your Order</h1>
+
+      <p>
+        Thank you for your order. At this time, and for the forseeable future, no financial institution has approved our store for online purchasing. But we'll be happy to fulfill your order the old-fashioned way. Simply print out this page and send a cashier's check or money order to: <br />
+        Plasticware<br />
+        12345678 SE Main Street NW<br />
+        Somewhere, OK  00100-7890<br />
+        <br />
+        Please allow 4-6 weeks for delivery.
+      </p>
+
+      <hr />
+
+      <div>
+        Shipping address:<br />
+        {{customerName}}<br />
+
+        {{#each addressLines}}
+        {{this}}<br />
+        {{/each}}
+      </div>
+      <br />
+
+      <table class="cart">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Item Price</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each lineItems}}
+          <tr>
+            <td>{{name}}</td>
+            <td class="number">{{quantity}}</td>
+            <td class="number">{{itemPrice}}</td>
+            <td class="number">{{linePrice}}</td>
+          </tr>
+          {{/each}}
+          <tr>
+            <td>Shipping &amp; Handling</td>
+            <td></td>
+            <td></td>
+            <td class="number">{{shipping}}</td>
+          </tr>
+          <tr class="total">
+            <td>TOTAL</td>
+            <td></td>
+            <td></td>
+            <td class="number">{{total}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </script>
+
+    <!--====================================================================-->
 
     <script src="lib/jquery-2.js"></script>
     <script src="lib/handlebars.js"></script>
