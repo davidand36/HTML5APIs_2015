@@ -60,14 +60,7 @@
 
     <!--====================================================================-->
 
-    <script id="cartTemplate" type="text/x-handlebars-template">
-      <h1>Your Cart</h1>
-
-      {{#if cartEmpty}}
-      <p>
-        Your cart is empty. Add something to it.
-      </p>
-      {{else}}
+    <script id="cartTablePartial" type="text/x-handlebars-template">
       <table class="cart">
         <thead>
           <tr>
@@ -100,7 +93,18 @@
           </tr>
         </tbody>
       </table>
+    </script>
 
+    <!--====================================================================-->
+
+    <script id="cartTemplate" type="text/x-handlebars-template">
+      <h1>Your Cart</h1>
+      {{#if cartEmpty}}
+      <p>
+        Your cart is empty. Add something to it.
+      </p>
+      {{else}}
+      {{> cartTable}}
       <button type="button" class="checkoutLink">Checkout</button>
       {{/if}}
     </script>
@@ -109,7 +113,6 @@
 
     <script id="checkoutTemplate" type="text/x-handlebars-template">
       <h1>Checkout</h1>
-
       <form id="orderForm">
         <label for="name">Name: </label>
         <input type="text" name="name" required /><br />
@@ -125,7 +128,6 @@
 
     <script id="orderTemplate" type="text/x-handlebars-template">
       <h1>Your Order</h1>
-
       <p>
         Thank you for your order. At this time, and for the forseeable future, no financial institution has approved our store for online purchasing. But we'll be happy to fulfill your order the old-fashioned way. Simply print out this page and send a cashier's check or money order to: <br />
         Plasticware<br />
@@ -140,45 +142,12 @@
       <div>
         Shipping address:<br />
         {{customerName}}<br />
-
         {{#each addressLines}}
         {{this}}<br />
         {{/each}}
       </div>
       <br />
-
-      <table class="cart">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Item Price</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each lineItems}}
-          <tr>
-            <td>{{name}}</td>
-            <td class="number">{{quantity}}</td>
-            <td class="number">{{itemPrice}}</td>
-            <td class="number">{{linePrice}}</td>
-          </tr>
-          {{/each}}
-          <tr>
-            <td>Shipping &amp; Handling</td>
-            <td></td>
-            <td></td>
-            <td class="number">{{shipping}}</td>
-          </tr>
-          <tr class="total">
-            <td>TOTAL</td>
-            <td></td>
-            <td></td>
-            <td class="number">{{total}}</td>
-          </tr>
-        </tbody>
-      </table>
+      {{> cartTable}}
     </script>
 
     <!--====================================================================-->

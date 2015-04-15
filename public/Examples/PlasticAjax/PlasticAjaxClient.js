@@ -35,6 +35,7 @@ function start( ) {
     setEventHandlers( );
     showHome( );
     Handlebars.registerHelper( 'paginator', paginator );
+    Handlebars.registerPartial( 'cartTable', $('#cartTablePartial').html() );
 
     //-------------------------------------------------------------------------
 
