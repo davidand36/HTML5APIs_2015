@@ -1,5 +1,10 @@
 <h1>Your Cart</h1>
 
+{{#if cartEmpty}}
+<p>
+  Your cart is empty. Add something to it.
+</p>
+{{else}}
 <table class="cart">
   <thead>
     <tr>
@@ -36,3 +41,4 @@
 <form action="{{baseUrl}}checkout" method="get">
   <button type="submit">Checkout</button>
 </form>
+{{/if}}

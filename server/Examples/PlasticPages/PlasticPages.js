@@ -135,7 +135,7 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
         var cartTally;
 
         if ( request.cookies[ CART_COOKIE_NAME ] ) {
-            cart = JSON.parse( request.cookies[ 'PlasticPages_cart' ] );
+            cart = JSON.parse( request.cookies[ CART_COOKIE_NAME ] );
         }
         itemId = request.body.itemId;
         if ( cart[ itemId ] ) {
@@ -164,7 +164,7 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
         var cartTally;
 
         if ( request.cookies[ CART_COOKIE_NAME ] ) {
-            cart = JSON.parse( request.cookies[ 'PlasticPages_cart' ] );
+            cart = JSON.parse( request.cookies[ CART_COOKIE_NAME ] );
         }
 
         getCatalog( function( ) {
@@ -172,6 +172,7 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
 
             response.render( 'cart', {
                 baseUrl: baseUrl,
+                cartEmpty: (cartTally.lineItems.length === 0),
                 lineItems: cartTally.lineItems,
                 shipping: cartTally.shipping,
                 total: cartTally.total
@@ -195,7 +196,7 @@ module.exports = function( express, app, viewsDir, dataDir, baseUrl ) {
         var cartTally;
 
         if ( request.cookies[ CART_COOKIE_NAME ] ) {
-            cart = JSON.parse( request.cookies[ 'PlasticPages_cart' ] );
+            cart = JSON.parse( request.cookies[ CART_COOKIE_NAME ] );
         }
         customerName = request.body.name;
         customerAddress = request.body.address;
