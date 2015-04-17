@@ -20,6 +20,77 @@
         </p>
       </div>
 
+      <h1>Requests and Responses</h1>
+      <div class="accordion h2">
+        <h2>Overview</h2>
+        <div>
+          <p>
+          With HTTP, the client (browser) sends a <em>request</em> and the server sends a <em>response</em>.
+          </p>
+        </div>
+        <h2>Request</h2>
+        <div>
+          <p>
+            An HTTP request has several components, including
+            <ul>
+              <li>URL</li>
+              <li>Method</li>
+              <li>Headers</li>
+              <li>Data</li>
+            </ul>
+          </p>
+          <p>
+            The <em>URL</em> determines where the request is sent, but may also indicate the nature of the request to the server. For example, the URL <br />
+            <code>https://pure-coast-1257.herokuapp.com/Examples/PlasticAjax/api/catalog?offset=8&limit=4</code> <br />
+            is sent to the server at <code>https://pure-coast-1257.herokuapp.com</code>, which then, as we shall see, processes the request a bit and passes it to a <code>PlasticAjax</code> module, which in turn calls a function that returns data according to an API for a <code>catalog</code>. The portion of the URL after the question mark (<code>?</code>) is called a <em>query string</em> and will be discussed below.
+          </p>
+          <p>
+            In general, a URL specifies the "location" of a "resource", which can be a page of HTML, an image, a record from a database, etc.
+          </p>
+          <p>
+            The <em>method</em> of a request is a verb that indicates the desired action to be performed on the resource. The most important methods are
+            <ul>
+              <li><code>GET</code>, which requests the retrieval of data, i.e. a string representing the resource.</li>
+              <li><code>POST</code>, which sends data to the server, often the contents of a form or the representation of a new resource.</li>
+              <li><code>PUT</code>, which also sends data to the server, often representing an updated version of a resource.</li>
+              <li><code>DELETE</code>, which requests that the resource be deleted.</li>
+            </ul>
+          </p>
+          <p>
+            <em>Headers</em> pass "meta-data" regarding the request and/or client. Each header has a standardized name and appropriate value, both strings.
+          </p>
+          <p>
+            Requests can also send data.
+          </p>
+          <p>
+            For GET requests, the data are appended to the URL as query strings. In the example URL given above, the query string <code>offset=8&limit=4</code> sends a parameter called <code>offset</code>, with a value of <code>8</code> and a parameter called <code>limit</code>, with a value of <code>4</code>.
+          </p>
+          <p>
+            For POST and PUT requests, data can also be sent in the request <em>body</em>. One reason for this is that URLs are limited in length, generally to around 2000 characters. Servers also limit the size of the request body, but the limit is typically much higher.
+          </p>
+        </div>
+        <h2>Response</h2>
+        <div>
+          <p>
+            An HTTP response also has several components, including
+            <ul>
+              <li>Status Code</li>
+              <li>Headers</li>
+              <li>Data</li>
+            </ul>
+          </p>
+          <p>
+            The <em>status code</em> consists of a number and short string. Numbers in the 200's indicate success; in the 400's, client error; and in the 500's, server error. Here is a <a href="http://www.restapitutorial.com/httpstatuscodes.html" target="_blank">nice reference</a>.
+          </p>
+          <p>
+            As with requests, response <em>headers</em> contain "meta-data" about the response and/or server.
+          </p>
+          <p>
+            A successful response generally returns, as <em>data</em>, a representation of the requested resource or something similar. If an error occurred, the data may provide more details about what went wrong.
+          </p>
+        </div>
+      </div>
+
       <h1>Traditional Web pages</h1>
       <div class="accordion h2">
         <h2>Overview</h2>
@@ -37,11 +108,74 @@
         </div>
       </div>
 
-      <h1>AJAX</h1>
+      <h1>Ajax</h1>
       <div class="accordion h2">
         <h2>Overview</h2>
         <div>
-          
+          <p>
+            <em>Ajax</em> stands for <em>Asynchronous JavaScript and XML</em>, but it is more general than that. It is technique where the client can request data from the server without a page refresh. It can then use these data to update or modify the contents of the current page.
+          </p>
+          <p>
+            <em>Asynchronous</em> means that after the JavaScript client sends the request to the server, it doesn't stop everything while waiting for the response. Instead it provides a callback function to handle the result and then resumes handling user input, timer events, etc. When the server finally does respond, the callback is invoked, but in the meantime the program has remained responsive.
+          </p>
+          <p>
+            <em>XML</em> is the file format that Ajax originally handled by default. But the same techniques can be used for many types of data, including HTML and JSON-formatted data.
+          </p>
+        </div>
+        <h2>XMLHttpRequest</h2>
+        <div>
+          <p>
+          Although various techniques have been used to accomplish Ajax, the primary one uses an <em>XMLHttpRequest</em> object, which is available on all modern browsers. Using <code>XMLHttpRequest</code> directly is a bit cumbersome, even aside from differences between browser implementations. You can find the details at the <a href="http://www.w3.org/TR/XMLHttpRequest/" target="_blank">W3C XMLHttpRequest Level 1 working draft</a>.
+          </p>
+        </div>
+        <h2>Ajax with jQuery</h2>
+        <div>
+          <p>
+            <em>jQuery</em> and similar libraries provide interfaces that simplify Ajax programming. See the <a href="http://api.jquery.com/category/ajax/" target="_blank">jQuery Ajax</a> documentation for details.
+          </p>
+          <p>
+            The most general-purpose method is <code>jQuery.ajax()</code>, or, since the <code>jQuery</code> object is usually referred to with the shorthand <code>$</code>, <code>$.ajax()</code>. This method allows the caller to set many options regarding the request, but it is a bit unwieldly for everyday use, so jQuery also provides some higher-level specializations.
+          </p>
+          <p>
+            <code>$.get()</code> uses the GET method to request a resource. This method takes a few parameters. The first is the URL. The second, which is not needed in all cases, is the data, supplied as an object with the appropriately named properties. We also need to tell it what to do when the response comes back. This can be done either by supplying a <em>callback</em> function or by using the <em>promise</em> returned by this method.
+          </p>
+          <p>
+            Example using a callback:
+            <div>
+              <pre>
+$.get( '/Examples/PlasticAjax/api/catalog',
+       {
+           offset: 8,
+           limit: 4
+       },
+       function( data ) {
+           console.log( data );
+       } );
+              </pre>
+              <button type="button" class="runCode">Run</button>
+            </div>
+          </p>
+          <p>
+            <code>$.getJSON()</code> is like <code>$.get()</code>, but specifies that it expects the response to be JSON-formatted data. (Otherwise jQuery makes its best guess at the <code>dataType</code>.) Here's a example using the returned promise:
+            <div>
+              <pre>
+$.getJSON( '/Examples/PlasticAjax/api/catalog',
+       {
+           offset: 8,
+           limit: 4
+       } )
+    .then(
+        function( data ) {
+            console.log( data );
+        }
+     );
+              </pre>
+              <button type="button" class="runCode">Run</button>
+            </div>
+          </p>
+          <p>
+            <code>$.post()</code> is similar, but uses the POST method. You'll use it for submitting forms and similar requests.
+          </p>
         </div>
       </div>
     </div>
