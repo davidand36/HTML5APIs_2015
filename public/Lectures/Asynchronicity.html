@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 APIs: Asynchronicity</title>
+    <link rel="stylesheet" href="Lecture.css" />
+  </head>
+  <body>
+
+    <h1 class="top">Asynchronicity</h1>
+
+    <div class="accordion h1">
+      <h1>Introduction</h1>
+      <div>
+        <p>
+          Most programs deal with tasks that require some significant amount of time to complete. Reading files from drives, requesting records from databases, and waiting for data to be sent over the Internet all involve delays. Some programs, generally ones that do not involve human interaction, can get away with simply waiting for each task to finish before proceeding. Web applications can rarely do so, because it makes them seem jerky and unresponsive to user input.
+        </p>
+        <p>
+          When a function does not return until the task it starts has completed, we say it is <em>synchronous</em> (a.k.a. <em>blocking</em>). In contrast, if a function starts a task but returns almost immediately while the task continues, we call it <em>asynchronous</em> (a.k.a. <em>non-blocking</em>). Asynchronous functions solve the problem mentioned above, allowing the application to handle user input or other requests smoothly.
+        </p>
+        <p>
+          The catch is that we still usually need to know when the task has completed, and often need the result of that task. There are a few ways to handle asynchronicity. The most basic of these is with <em>callback functions</em>. A more powerful way is the <em>deferred-promise</em> pattern, which builds on callbacks.
+        </p>
+      </div>
+
+      <h1>Callbacks</h1>
+      <div class="accordion h2">
+        <h2>Overview</h2>
+        <div>
+          <p>
+            Suppose <code>doSomethingTimeConsuming()</code> is an asynchronous function that starts some time-consuming task. Often it will be written so that it accepts a <em>callback function</em> as an argument. The agreement is that when the task completes, that callback function will be called, often with the result of that task.
+          </p>
+        </div>
+        <h2>Example: setTimeout</h2>
+        <div>
+          <p>
+            Browsers (and Node.js) offer a global function, <code>setTimeout()</code> which waits for a specified number of milliseconds and then calls the function you supply it. For example:
+          </p>
+          <div>
+            <pre>
+var start = new Date().getTime();
+function timeElapsed( ) { return new Date().getTime() - start; }
+
+function timeoutHandler( ) {
+    console.log( 'Called back at ', timeElapsed() );
+}
+
+console.log( 'Starting at ', timeElapsed() );
+<b>setTimeout( timeoutHandler, 2000 )</b>;
+            </pre>
+            <button type="button" class="runCode">Run</button>
+          </div>
+          <p>
+            Rather than passing in a predefined, named function, you can also pass in an anonymous function as your callback:
+          </p>
+          <div>
+            <pre>
+var start = new Date().getTime();
+function timeElapsed( ) { return new Date().getTime() - start; }
+
+console.log( 'Starting at ', timeElapsed() );
+setTimeout( <b>function( ) {
+        console.log( 'Called back at ', timeElapsed() );
+    }</b>,
+    2000 );
+            </pre>
+            <button type="button" class="runCode">Run</button>
+          </div>
+        </div>
+        <h2>Passing callbacks along</h2>
+        <div>
+          <p>
+            Functions in JavaScript are objects that can be passed around like any data and it is common to do so with callbacks. For example, we may have a function that initiates one or more asynchronous tasks and lets the caller decide what to do when they (each) finish:
+          </p>
+          <div>
+            <pre>
+var start = new Date().getTime();
+function timeElapsed( ) { return new Date().getTime() - start; }
+
+function runTheTasks( <b>callbackA</b>, <b>callbackB</b> ) {
+    console.log( 'Starting tasks at', timeElapsed() );
+    setTimeout( <b>callbackA</b>, 3000 );
+    setTimeout( <b>callbackB</b>, 1000 );
+    console.log( 'Finished calling tasks at', timeElapsed() );
+}
+
+function handleSlowTask( ) {
+    console.log( 'Slow task finished at', timeElapsed() );
+}
+
+function handleSlowerTask( ) {
+    console.log( 'Slower task finished at', timeElapsed() );
+}
+
+runTheTasks( handleSlowerTask, handleSlowTask );
+            </pre>
+            <button type="button" class="runCode">Run</button>
+          </div>
+        </div>
+        <h2>Chaining callbacks</h2>
+        <div>
+          <p>
+            Sometimes we need to run a series of asynchronous tasks, where one must complete before the next is started, often because each needs information obtained from a previous task. We can achieve this with nested callbacks.
+          </p>
+          <div>
+            <pre>
+var start = new Date().getTime();
+function timeElapsed( ) { return new Date().getTime() - start; }
+
+var total = 0;
+
+setTimeout( <b>function</b>( ) {
+        console.log( 'First task finished at', timeElapsed() );
+        total += timeElapsed();
+        setTimeout( <b>function</b>( ) {
+                console.log( 'Second task finished at', timeElapsed() );
+                total += timeElapsed();
+                setTimeout( <b>function</b>( ) {
+                        console.log( 'third task finished at', timeElapsed() );
+                        total += timeElapsed();
+                        console.log( 'Total =', total );
+                    },
+                    1250 );
+            },
+            1500 );
+    },
+    1000 );
+            </pre>
+            <button type="button" class="runCode">Run</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <button type="button" id="accordionToggle"></button>
+
+    <script src="../lib/jquery-2.js"></script>
+    <script src="../lib/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="Lectures.js"></script>
+  </body>
+</html>
