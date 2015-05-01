@@ -8,7 +8,7 @@
   <body>
 
     <h1 class="top">HTML5 APIs: Storing User Data</h1>
-    
+
     <div class="accordion h1">
       <h1>Overview</h1>
       <div>
@@ -103,65 +103,34 @@ for ( i = 0, lim = localStorage.length; i &lt; lim; ++i )
           For the same reason, <code>clear()</code> may remove more items than you want. The iteration over all keys is also of questionable value, though it might be useful if you want to tie data between games together.
         </div>
 
-        <h2>JSON</h2>
-        <div class="accordion h3">
-          <h3>What is JSON?</h3>
-          <div>
-            <ul>
-              <li><em>JSON</em> stands for JavaScript Object Notation and was originally specified by Douglas Crockford.</li>
-              <li>It is a standard format for representing data as a human-readable string.</li>
-              <li>Not surprisingly, the representation looks like data literals in JavaScript.</li>
-              <li>Nevertheless, JSON is supported in many languages.</li>
-              <li>JSON is an alternative to XML for many purposes, including
-                <ul>
-                  <li>transfering data over networks</li>
-                  <li>serializing data for storage</li>
-                </ul>
-              </li>
-              <li>JSON can represent many types of data: strings, numbers, booleans, arrays, objects, and <code>null</code>.
-              <li>For format details, see <a href="http://www.json.org/" target="_blank">json.org</a></li>
-            </ul>
-          </div>
+        <h2>Using JSON with Web Storage</h2>
+        <div>
+          <ul>
+            <li>Web Storage requires <em>string</em> values.</li>
+            <li>Using JSON we can store and retrieve most forms of data easily.</li>
+            <li>We can store an item with:
+              <pre>
+                localStorage[ "aKey" ] = JSON.stringify( data );
+              </pre>
+            </li>
+            <li>We can then read it back with:
+              <pre>
+                var data = JSON.parse( localStorage[ "akey" ] );
+              </pre>
+            </li>
+          </ul>
+        </div>
 
-          <h3>JavaScript support</h3>
-          <div>
-            <ul>
-              <li>Originally converting to and from JSON required a library, even in JavaScript, but current browser offer native support.</li>
-              <li><code>JSON.stringify( data )</code> converts the <code>data</code> object to a string.</li>
-              <li><code>JSON.parse( json )</code> converts a JSON string to an object.</li>
-            </ul>
-            <li>Example:
-              <div>
-                <pre>
-var obj = {
-              str: "Hi",
-              int: 19,
-              arr: [ "Merhaba", 23, { val: null } ]
-          };
-console.log( JSON.stringify( obj ) );
-                </pre>
-            <button type="button" class="runCode">Run</button>
-              </div>
-          </div>
+        <h2>Naming keys</h2>
+        <div>
+          <p>
+            Web storage, like cookies, is provided on a per-domain basis: you have access to all and only the cookies that are set for your site's domain.
+          </p>
+          <p>
+            You will often have several Web applications running from the same domain. To keep their data distinct, I find it generally useful to prefix the keys with the name of the application. For example, the key for the shopping cart for the PlasticAjax application is called "PlasticAjax_cart".
+          </p>
+        </div>
 
-          <h3>Using JSON with Web Storage</h3>
-          <div>
-            <ul>
-              <li>Web Storage requires <em>string</em> values.</li>
-              <li>Using JSON we can store and retrieve most forms of data easily.</li>
-              <li>We can store an item with:
-                <pre>
-localStorage[ "aKey" ] = JSON.stringify( data );
-                </pre>
-              </li>
-              <li>We can then read it back with:
-                <pre>
-var data = JSON.parse( localStorage[ "akey" ] );
-                </pre>
-              </li>
-            </ul>
-          </div>
-        
       </div>
     </div>
 
@@ -173,4 +142,3 @@ var data = JSON.parse( localStorage[ "akey" ] );
     <script src="Lectures.js"></script>
   </body>
 </html>
-      
