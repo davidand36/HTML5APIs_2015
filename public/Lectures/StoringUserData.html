@@ -99,8 +99,7 @@ for ( i = 0, lim = localStorage.length; i &lt; lim; ++i )
     ...
 }
           </pre>
-          NB: Because local storage is provided at the domain level, and a domain may feature several apps, you should consider using a unique prefix (or similar convention) for the keys for a game.<br />
-          For the same reason, <code>clear()</code> may remove more items than you want. The iteration over all keys is also of questionable value, though it might be useful if you want to tie data between games together.
+          Unless your domain is used for a single application, <code>clear()</code> may remove more items than you want. The iteration over all keys is also of questionable value, though it might be useful if you want to tie data between apps together.
         </div>
 
         <h2>Using JSON with Web Storage</h2>
