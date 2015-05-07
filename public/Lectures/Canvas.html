@@ -438,8 +438,7 @@ ctx.stroke( );
           
           <h3>Other path elements</h3>
           <div>
-            In addition to line segments and arcs, the Canvas API offers quadratic and cubic <em>Bezier curves</em>. The math behind these is more complicated, but they offer the ability to draw a variety of nice shapes. <br />
-            You won't need them for most games, but you can read about them in Seidelin's and Geary's books.
+            In addition to line segments and arcs, the Canvas API offers quadratic and cubic <em>Bezier curves</em>. The math behind these is more complicated, but they offer the ability to draw a variety of nice shapes. You can read about them in Geary books.
           </div>
           
         </div>
@@ -910,7 +909,101 @@ ctx.putImageData( destImgData, 0, 0 );
           <button type="button" class="runCanvasCode">Run</button>
           <button type="button" class="clearCanvas">Clear</button>
         </div>
+      </div>
         
+      <h1>Exercises</h1>
+      <div class="accordion h2">
+        <h2>Circle</h2>
+        <div class="accordion h3">
+          <h3>Problem</h3>
+          <div>
+            Write functions to stroke and fill a circle.
+          </div>
+          <h3>Solution</h3>
+          <div>
+            <div class="canvasDemo">
+              <canvas class="demo"></canvas>
+              <pre>
+function circle( x, y, radius ) {
+    ctx.moveTo( (x + radius), y );
+    ctx.arc( x, y, radius, 0, Math.PI * 2 );
+}
+
+function strokeCircle( x, y, radius )
+{
+    ctx.beginPath( );
+    circle( x, y, radius );
+    ctx.stroke( );
+}
+
+function fillCircle( x, y, radius )
+{
+    ctx.beginPath( );
+    circle( x, y, radius );
+    ctx.fill( );
+}
+
+ctx.strokeStyle = 'rgb( 0, 0, 255 )';
+ctx.lineWidth = 10;
+ctx.fillStyle = 'rgb( 0, 200, 0 )';
+strokeCircle( 75, 75, 50 );
+fillCircle( 225, 75, 50 );
+              </pre>
+              <button type="button" class="runCanvasCode">Run</button>
+              <button type="button" class="clearCanvas">Clear</button>
+            </div>
+          </div>
+        </div>
+        <h2>Rounded rectangle</h2>
+        <div class="accordion h3">
+          <h3>Problem</h3>
+          <div>
+            Write functions to stroke and fill a rounded rectangle.
+          </div>
+          <h3>Solution</h3>
+          <div>
+            <div class="canvasDemo">
+              <canvas class="demo"></canvas>
+              <pre>
+function roundedRect( x, y, width, height, radius )
+{
+    ctx.moveTo( x, (y + radius) );
+    ctx.arc( (x + radius), (y + radius), radius,
+             Math.PI, Math.PI * 3/2 );
+    ctx.arc( (x + width - radius), (y + radius), radius,
+             Math.PI * 3/2, 0 );
+    ctx.arc( (x + width - radius), (y + height - radius), radius,
+             0, Math.PI * 1/2 );
+    ctx.arc( (x + radius), (y + height - radius), radius,
+             Math.PI * 1/2, Math.PI );
+    ctx.lineTo( x, (y + radius) );
+}
+
+function strokeRoundedRect( x, y, width, height, radius )
+{
+    ctx.beginPath( );
+    roundedRect( x, y, width, height, radius );
+    ctx.stroke( );
+}
+
+function fillRoundedRect( x, y, width, height, radius )
+{
+    ctx.beginPath( );
+    roundedRect( x, y, width, height, radius );
+    ctx.fill( );
+}
+
+ctx.strokeStyle = 'rgb( 0, 0, 255 )';
+ctx.lineWidth = 10;
+ctx.fillStyle = 'rgb( 0, 200, 0 )';
+strokeRoundedRect( 20, 20, 100, 100, 20 );
+fillRoundedRect( 180, 20, 100, 100, 20 );
+              </pre>
+              <button type="button" class="runCanvasCode">Run</button>
+              <button type="button" class="clearCanvas">Clear</button>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
