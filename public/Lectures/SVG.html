@@ -232,7 +232,7 @@ var paper = Raphael( element, 320, 200 );
             This <code>paper</code> object is the one you will use for most drawing operations.
           </p>
         </div>
-        <h2>Shapes</h2>
+        <h2>Shapes, paths, text, images</h2>
         <div class="accordion h3">
           <h3>Coordinates</h3>
           <div>
@@ -425,11 +425,61 @@ nose.attr( {
               We will not go into the details of the various arcs and curves here. The W3C specification documents SVG <a href="http://www.w3.org/TR/SVG/paths.html#PathData" target="_blank">path data</a> well. You can get a feeling for how the control points of Bézier curves work at <a href="http://www.jasondavies.com/animated-bezier/" target="_blank">Jason Davies's animated Bézier demo</a>.
             </p>
           </div>
+          <h3>Text</h3>
+          <div>
+            <p>
+              The <code>text()</code> method puts text at specified coordinates. There are most of the usual CSS attributes for setting the font family, size, etc. The <code>text-anchor</code> attribute controls horizontal alignment. Vertically, text always seems to be centered. By default, fill is black and stroke is none.
+            </p>
+            <div>
+              <div class="svgHolder"></div>
+              <pre>
+paper.path( [ 'M', 0, 75,  'L', 299, 75 ] )
+    .attr( { stroke: 'rgb( 50, 50, 50 )' } );
+
+paper.text( 10, 75, 'Merhaba' )
+    .attr( {
+         font: 'bold 18px sans-serif',
+         'text-anchor': 'start'
+    } );
+paper.text( 150, 75, 'Two lines\nin the middle' )
+    .attr( {
+         font: 'bold 18px sans-serif',
+         'text-anchor': 'middle',
+         stroke: 'black',
+         fill: 'none'
+    } );
+paper.text( 290, 75, 'Tschüß' )
+    .attr( {
+         font: '18px sans-serif',
+         'font-style': 'italic',
+         'text-anchor': 'end',
+         fill: 'blue'
+    } );
+              </pre>
+              <button type="button" class="runSvgCode">Run</button>
+              <button type="button" class="clearSvg">Clear</button>
+            </div>
+          </div>
+          <h3>Images</h3>
+          <div>
+            <p>
+              You can add bitmap images to your drawing with the <code>image()</code> method. It takes source URL, position, and size parameters. Notice that this allows scaling in either direction.
+            </p>
+            <div>
+              <div class="svgHolder"></div>
+              <pre>
+var img1 = paper.image( 'images/NewTux.png', 20, 20, 104, 125 );
+var img2 = paper.image( 'images/NewTux.png', 220, 20, 52, 125 );
+              </pre>
+              <button type="button" class="runSvgCode">Run</button>
+              <button type="button" class="clearSvg">Clear</button>
+            </div>
+          </div>
         </div>
         <h2>Events</h2>
         <div>
           <p>
-            Because SVG elements are in the DOM, it is possible to set event handlers on them. Raphaël provides methods for setting just about any mouse, touch, or drag event you want on an element. Here's a simple example:
+            Because SVG elements are in the DOM, it is possible to set event handlers on them. Raphaël provides methods for setting just about any mouse, touch, or drag-and-drop event you want on an element. Here's a simple example:
           </p>
           <div>
             <div class="svgHolder"></div>
@@ -508,8 +558,66 @@ circle.animate( {
         <h2>Further reading</h2>
         <div>
           <p>
+            Raphaël offers more than could be covered here, including clipping and transformations.
+          </p>
+          <p>
             In addition to the <a href="http://raphaeljs.com" target="_blank">official Raphaël Web site</a>, the book Damien Dawber, <em>Learning Raphaël Vector Graphics</em>, Packt Publishing, 2013 (ISBN: 978-1-78216-916-1), offers good coverage of this library.
           </p>
+        </div>
+      </div>
+
+      <h1>D3</h1>
+      <div class="accordion h2">
+        <h2>Overview</h2>
+        <div>
+          <p>
+            <a href="http://d3js.org/" target="_blank">D3</a>, which stands for <em>Data-Driven Documents</em> is another library which makes great use of SVG, in this case for the purpose of data visualization. It can be used to create a wide variety of graphs and charts.
+          </p>
+        </div>
+        <h2>Binding data to DOM elements</h2>
+        <div>
+          <p>
+            Although D3 is usually used with SVG, it can work with any sort of DOM elements. Its syntax is a bit strange, because it does some magic under the hood to make it easy to connect arrays of data to arrays of DOM elements.
+          </p>
+          <p>
+            Here is a simple example which uses <code>&lt;p&gt;</code> elements. They will get added to an element I have set up here called <code>svgHolder</code> (though in this case it won't hold an SVG).
+          </p>
+          <div>
+            <div class="svgHolder"></div>
+            <pre>
+var sampleData = [
+        { color: 'red', total: 7 },
+        { color: 'white', total: 56 },
+        { color: 'blue', total: 1 }
+    ];
+
+d3.select( svgHolder )  //Can use a CSS selector or reference to DOM element
+    .selectAll( 'p' )   //These four lines
+    .data( sampleData ) // bind our data
+    .enter( )           // to (new) &lt;p&gt;
+    .append( 'p' )      // elements in the original selection.
+    //Now we can set properties of each &lt;p&gt; element based on the data:
+    .text( function( d, i ) {
+               if ( d.total === 1 ) {
+                   return (i+1) + ') There is ' + d.total + ' ' +
+                       d.color + ' region in the US flag.';
+               } else {
+                   return (i+1) + ') There are ' + d.total + ' ' +
+                       d.color + ' regions in the US flag.';
+               }
+           } )
+    .style( 'color',
+            function( d ) {
+                if ( d.color === 'white' ) {
+                    return 'black';
+                } else {
+                    return d.color;
+                }
+            } );
+            </pre>
+            <button type="button" class="runD3Code">Run</button>
+            <button type="button" class="clearSvg">Clear</button>
+          </div>
         </div>
       </div>
 
@@ -521,6 +629,7 @@ circle.animate( {
     <script src="../lib/jquery-2.js"></script>
     <script src="../lib/jquery-ui/ui/jquery-ui.js"></script>
     <script src="../lib/raphael.js"></script>
+    <script src="../lib/d3.v3.js"></script>
     <script src="Lectures.js"></script>
     <script src="SVG_Lecture.js"></script>
   </body>

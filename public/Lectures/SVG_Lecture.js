@@ -34,6 +34,14 @@ function setupSvgDemos( ) {
             eval( code );
         } );
 
+    $('button.runD3Code').click(
+        function( evt ) {
+            var parent = $(evt.target).parent(),
+                code = getCode( parent ),
+                svgHolder = $(parent).find( '.svgHolder' )[0];
+            eval( code );
+        } );
+
     $('button.clearSvg').click(
         function( evt ) {
             var parent = $(evt.target).parent(),
