@@ -17,7 +17,7 @@
           Graphics systems such as Canvas use <em>raster graphics</em>. In this approach, the image being drawn is regarded as a rectangular collection of pixels, each with a particular color. This is often referred to as <em>bitmap graphics</em>. Since most display devices (and printers) are essentially raster devices, displaying the image is essentially a matter of copying pixel data. (Compression, image scaling, and translucency (alpha) may complicate this copying, of course.)
         </p>
         <p>
-          Raster graphics are especially appropriate for photographs. Tools like <a href="www.gimp.org/" target="_blank">GIMP</a> and <em>Photoshop</em> are designed for manipulating bitmap images. Formats like <em>JPEG</em> are ideal for storing them. <em>PNG</em> and <em>GIF</em> are also bitmap formats. Once uncompressed, all of them are simply series of numbers representing the colors of successive pixels.
+          Raster graphics are especially appropriate for photographs. Tools like <a href="http://www.gimp.org/" target="_blank">GIMP</a> and <em>Photoshop</em> are designed for manipulating bitmap images. Formats like <em>JPEG</em> are ideal for storing them. <em>PNG</em> and <em>GIF</em> are also bitmap formats. Once uncompressed, all of them are simply series of numbers representing the colors of successive pixels.
         </p>
         <p>
           In a <em>vector graphics</em>, images are represented as series of commands for drawing various shapes. While certain specialized monitors and plotters are capable of displaying vector graphics directly, generally a specialized interpreter is required to render them.
@@ -127,26 +127,32 @@
           </p>
         </div>
         <h2>As <code>&lt;img&gt;</code> elements</h2>
-        <div>
-          <p>
-            Modern browsers support <em>SVG</em> files as the <code>src</code> for <code>&lt;img&gt;</code> elements. For example:
-          </p>
-          <img src="images/Cat.svg" title="Cat" alt="Drawing of a cat" />
-          <p>
-            Using Inkscape, I converted this to a <em>PNG</em> file, which we can view for comparison. At the original scale, they look the same:
-          </p>
-          <img src="images/Cat.png" title="Cat" alt="Drawing of a cat" />
-          <p>
-            But if we resize them, either using CSS or as I do here, using the <code>width</code> attribute, the difference becomes apparent. First the SVG:
-          </p>
-          <img src="images/Cat.svg" title="Cat" alt="Drawing of a cat" width="720" />
-          <p>
-            Then the PNG:
-          </p>
-          <img src="images/Cat.png" title="Cat" alt="Drawing of a cat" width="720" />
-          <p>
-            This shows where the <em>Scalable</em> in SVG comes in. Because the browser's renderer is not just putting down pixels (and doing its best to anti-alias them for smoothness), but actually drawing lines, circles, etc., at the new scale, the image retains its sharpness.
-          </p>
+        <div class="accordion h3">
+          <h3>Original size</h3>
+          <div>
+            <p>
+              Modern browsers support <em>SVG</em> files as the <code>src</code> for <code>&lt;img&gt;</code> elements. For example, here is the <em>Cat.svg</em> whose XML we just saw:
+            </p>
+            <img src="images/Cat.svg" title="Cat" alt="Drawing of a cat" />
+            <p>
+              Using Inkscape, I converted this to a <em>PNG</em> file, which we can view for comparison. At the original scale, they look the same:
+            </p>
+            <img src="images/Cat.png" title="Cat" alt="Drawing of a cat" />
+          </div>
+          <h3>Enlarged</h3>
+          <div>
+            <p>
+              But if we resize them, either using CSS or, as I do here, using the <code>width</code> attribute, the difference becomes apparent. First the SVG:
+            </p>
+            <img src="images/Cat.svg" title="Cat" alt="Drawing of a cat" width="720" />
+            <p>
+              Then the PNG:
+            </p>
+            <img src="images/Cat.png" title="Cat" alt="Drawing of a cat" width="720" />
+            <p>
+              This shows where the <em>Scalable</em> in SVG comes in. Because the browser's renderer is not just putting down pixels (and doing its best to anti-alias them for smoothness), but actually drawing lines, circles, etc., at the new scale, the image retains its sharpness.
+            </p>
+          </div>
         </div>
         <h2>In CSS properties</h2>
         <div>
