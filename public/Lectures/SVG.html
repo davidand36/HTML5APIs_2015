@@ -561,7 +561,7 @@ circle.animate( {
             Raphaël offers more than could be covered here, including clipping and transformations.
           </p>
           <p>
-            In addition to the <a href="http://raphaeljs.com" target="_blank">official Raphaël Web site</a>, the book Damien Dawber, <em>Learning Raphaël Vector Graphics</em>, Packt Publishing, 2013 (ISBN: 978-1-78216-916-1), offers good coverage of this library.
+            In addition to the <a href="http://raphaeljs.com" target="_blank">official Raphaël Web site</a>, the book Damien Dawber, <em>Learning Raphaël Vector Graphics</em>, Packt Publishing, 2013 <a href="http://shop.oreilly.com/product/9781782169161.do" target="_blank">(ISBN: 978-1-78216-916-1)</a>, offers good coverage of this library.
           </p>
         </div>
       </div>
@@ -586,9 +586,9 @@ circle.animate( {
             <div class="svgHolder"></div>
             <pre>
 var sampleData = [
-        { color: 'red', total: 7 },
-        { color: 'white', total: 56 },
-        { color: 'blue', total: 1 }
+        { color: 'red', regions: 7, area: 0.4154 },
+        { color: 'white', regions: 56, area: 0.3973 },
+        { color: 'blue', regions: 1, area: 0.1874 }
     ];
 
 d3.select( svgHolder )  //Can use a CSS selector or reference to DOM element
@@ -598,11 +598,11 @@ d3.select( svgHolder )  //Can use a CSS selector or reference to DOM element
     .append( 'p' )      // elements in the original selection.
     //Now we can set properties of each &lt;p&gt; element based on the data:
     .text( function( d, i ) {
-               if ( d.total === 1 ) {
-                   return (i+1) + ') There is ' + d.total + ' ' +
+               if ( d.regions === 1 ) {
+                   return (i+1) + ') There is ' + d.regions + ' ' +
                        d.color + ' region in the US flag.';
                } else {
-                   return (i+1) + ') There are ' + d.total + ' ' +
+                   return (i+1) + ') There are ' + d.regions + ' ' +
                        d.color + ' regions in the US flag.';
                }
            } )
@@ -618,6 +618,118 @@ d3.select( svgHolder )  //Can use a CSS selector or reference to DOM element
             <button type="button" class="runD3Code">Run</button>
             <button type="button" class="clearSvg">Clear</button>
           </div>
+        </div>
+        <h2>D3 with SVG</h2>
+        <div>
+          <p>
+            Text is nice, but we want some graphics. So we'll tell D3 to create an SVG. Then we'll add circles to that, one for each data item. We'll position them uniformly across our chart. We'll size them so that their areas are proportional to the <code>area</code> values in the data. We'll color them using the <code>color</code> values in the data. We'd better put an outline around the circles or we won't see the white one.
+          </p>
+          <div>
+            <div class="svgHolder"></div>
+            <pre>
+var sampleData = [
+        { color: 'red', regions: 7, area: 0.4154 },
+        { color: 'white', regions: 56, area: 0.3973 },
+        { color: 'blue', regions: 1, area: 0.1874 }
+    ];
+
+var svgWidth = $(svgHolder).width(),
+    svgHeight = $(svgHolder).height();
+var svg = d3.select( svgHolder )
+            .append( 'svg' )
+            .attr( 'width', svgWidth )
+            .attr( 'height', svgHeight );
+
+var margin = 10;
+var maxRadius = (svgWidth - (sampleData.length + 1) * margin) / (2 * sampleData.length);
+svg.selectAll( 'circle' )
+    .data( sampleData )
+    .enter( )
+    .append( 'circle' )
+    .attr( 'cx',
+           function( d, i ) {
+               return margin + maxRadius  +  i * (margin + 2 * maxRadius);
+           } )
+    .attr( 'cy', function( ) {
+               return svgHeight / 2;
+           } )
+    .attr( 'r', function( d ) {
+               var relR = Math.sqrt( d.area ); //area of circle = πr²
+               return relR * maxRadius;
+           } )
+    .attr( 'fill', function( d ) {
+              return d.color;
+           } )
+    .attr( 'stroke', function( ) {
+              return 'black';
+           } );
+            </pre>
+            <button type="button" class="runD3Code">Run</button>
+            <button type="button" class="clearSvg">Clear</button>
+          </div>
+        </div>
+        <h2>Pie chart</h2>
+        <div>
+          <p>
+            D3 provides many utility functions that make it pretty easy to create standard charts and graphs. For example, there is <code>d3.layout.pie()</code>, which takes a dataset and computes the appropriate angles, etc., for making pie charts. And then <code>d3.arc()</code> creates a function that takes the results of those computations for each datum and creates an SVG path with the right arcs and lines.
+          </p>
+          <div>
+            <div class="svgHolder"></div>
+            <pre>
+var sampleData = [
+        { color: 'red', regions: 7, area: 0.4154 },
+        { color: 'white', regions: 56, area: 0.3973 },
+        { color: 'blue', regions: 1, area: 0.1874 }
+    ];
+
+var svgWidth = $(svgHolder).width(),
+    svgHeight = $(svgHolder).height();
+var svg = d3.select( svgHolder )
+            .append( 'svg' )
+            .attr( 'width', svgWidth )
+            .attr( 'height', svgHeight );
+
+var pieLayout = d3.layout.pie();
+pieLayout.value( function( d ) {   //Tell it to
+        return d.area;             // use the area field
+    } );                           // from our data.
+
+var radius = (Math.min( svgWidth, svgHeight ) / 2) - 10;
+var arcFn = d3.svg.arc().innerRadius( 0 ).outerRadius( radius );
+
+svg.selectAll( 'g.slice' )
+    .data( pieLayout( sampleData ) )
+    .enter( )
+    .append( 'g' ) //SVG Group element for each pie slice
+    .attr( 'class', 'slice' )
+    .attr( 'transform',
+           'translate(' + svgWidth / 2 + ',' + svgHeight / 2 + ')' )
+    .append( 'path' )
+    .attr( 'fill',
+           function( d ) {
+               return d.data.color;
+           } )
+    .attr( 'd', arcFn );
+
+svg.append( 'circle' )
+    .attr( 'cx', svgWidth / 2 )
+    .attr( 'cy', svgHeight / 2 )
+    .attr( 'r', radius )
+    .attr( 'stroke', 'black' )
+    .attr( 'fill', 'none' );
+            </pre>
+            <button type="button" class="runD3Code">Run</button>
+            <button type="button" class="clearSvg">Clear</button>
+          </div>
+        </div>
+        <h2>Further reading</h2>
+        <div>
+          <p>
+            D3 offers much more than can be mentioned here, including interactivity, animation, geomapping, and exporting to various formats.
+          </p>
+          <p>
+            In addition to the <a href="http://d3js.org/" target="_blank">official D3 Web site</a>, the book Scott Murray, <em>Interactive Data Visualization for the Web</em>, O'Reilly, 2013 <a href="http://shop.oreilly.com/product/0636920026938.do" target="_blank">(Print ISBN:978-1-4493-3973-9, Ebook ISBN:978-1-4493-3972-2)</a> provides a gentle but thorough introduction.
+          </p>
         </div>
       </div>
 
