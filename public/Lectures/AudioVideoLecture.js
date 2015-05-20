@@ -13,6 +13,7 @@
 //=============================================================================
 
 setupAudioDemos( );
+setupVideoDemos( );
 
 //=============================================================================
 
@@ -59,6 +60,7 @@ function getBestAudioFormat( ) {
 function getBestVideoFormat( ) {
     var formats = [
         { ext: 'webm', mime: 'video/webm' },
+        { ext: 'ogv', mime: 'video/ogg; codecs="theora, vorbis"' },
         { ext: 'mp4', mime: 'video/mp4' }
     ];
     return getBestFormat( 'video', formats );
@@ -76,7 +78,6 @@ function setupAudioDemos( ) {
         i, lim;
 
     var audioFormat = getBestAudioFormat( );
-    var videoFormat = getBestVideoFormat( );
 
     for ( i = 0, lim = soundNames.length; i < lim; ++i ) {
         audio = new Audio( 'audio/' + soundNames[ i ] + '.' + audioFormat );
@@ -97,6 +98,31 @@ function setupAudioDemos( ) {
                 sounds[ soundNames[ i ] ].pause( );
                 sounds[ soundNames[ i ] ].currentTime = 0;
             }
+        } );
+}
+
+
+//.............................................................................
+
+function setupVideoDemos( ) {
+    var videoNames = [ 'wannaworktogether' ],
+        videos = { },
+        video,
+        i, lim;
+
+    var videoFormat = getBestVideoFormat( );
+
+    for ( i = 0, lim = videoNames.length; i < lim; ++i ) {
+        video = document.createElement( 'video' );
+        video.src = 'video/' + videoNames[ i ] + '.' + videoFormat;
+        videos[ videoNames[ i ] ] = video;
+    }
+
+    $('button.runVideoCode').click(
+        function( evt ) {
+            var parent = $(evt.target).parent(),
+                code = getCode( parent );
+            eval( code );
         } );
 }
 

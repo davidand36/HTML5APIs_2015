@@ -9,9 +9,11 @@
   <body>
 
     <h1 class="top">HTML5 APIs: Audio &amp; Video</h1>
-    
-    <div class="accordion h2">
-      <h2>Overview</h2>
+
+    <div class="accordion h1">
+      <h1>Audio</h1>
+      <div class="accordion h2">
+        <h2>Overview</h2>
         <div>
           With HTML5, apps can play and control sounds. Games can play sound effects, background music, and more. Support still varies between browsers, but the important functionality is now ready for use.
         </div>
@@ -125,13 +127,6 @@
                   <td>Ogg is container format. Vorbis is audio codec.</td>
                 </tr>
                 <tr>
-                  <td>WebM Vorbis</td>
-                  <td>Lossy</td>
-                  <td>Open</td>
-                  <td>Chr, FF, Op</td>
-                  <td>Audio-video container</td>
-                </tr>
-                <tr>
                   <td>Ogg Opus</td>
                   <td>Lossy</td>
                   <td>Open</td>
@@ -160,13 +155,13 @@
           <div>
             We can ask whether a particular format is supported:
             <pre>
-var audio = new Audio(),
-    mp3Support = audio.canPlayType( 'audio/mpeg' );
+              var audio = new Audio(),
+              mp3Support = audio.canPlayType( 'audio/mpeg' );
             </pre>
             The argument is the MIME type of the format.<br />
             For containers like Ogg we should also specify the codec(s):
             <pre>
-var oggVorbisSupport = audio.canPlayType( 'audio/ogg; codecs="vorbis"' );
+              var oggVorbisSupport = audio.canPlayType( 'audio/ogg; codecs="vorbis"' );
             </pre>
             The value of the variable is always one of these, in decreasing order of likelihood of support:
             <ul>
@@ -193,7 +188,7 @@ for ( var f = 0, len = formats.length; f < len; ++f ) {
             </pre>
             <button type="button" class="runCode">Run</button>
             <p>
-            If that fails, we might check for (and supply) other formats and/or check for &quot;maybe&quot; support.
+              If that fails, we might check for (and supply) other formats and/or check for &quot;maybe&quot; support.
             </p>
           </div>
         </div>
@@ -216,7 +211,7 @@ for ( var f = 0, len = formats.length; f < len; ++f ) {
           <div>
             For games we usually create <code>audio</code> element objects in JavaScript:
             <pre>
-var myaudio = new Audio( "audio/MySound." + formatExt );              
+              var myaudio = new Audio( "audio/MySound." + formatExt );
             </pre>
             Unless we want to use the browser controls, we usually do not need to append this to any DOM element.
           </div>
@@ -372,7 +367,7 @@ $(snd).on( "ended",
               <li><code>timeupdate</code>: fired during playback, roughly every 0.25 second.</li>
             </ul>
           </div>
-          
+
         </div>
 
         <h2>Limitations</h2>
@@ -392,7 +387,132 @@ $(snd).on( "ended",
             <li>Advanced audio API's, to allow synchronization of media elements, access to sample data, filtering and effects, etc., are still being developed. (The <a href="http://www.w3.org/TR/audioproc/" target="_blank">W3C Working Draft</a> references two proposals, one from Google and another from Mozilla.)</li>
           </ul>
         </div>
-        
+
+      </div>
+
+      <h1>Video</h1>
+      <div class="accordion h2">
+        <h2>Overview</h2>
+        <div>
+          <p>
+            HTML5 video works very similarly to audio, with the obvious difference that it includes visual data, usually in addition to audio data.
+          </p>
+          <p>
+            You can include <code>&lt;video&gt;</code> elements in your HTML, with or without controls. You can also create them dynamically, using JavaScript. Unlike audio elements, you will almost always want to add them to the page's DOM so that they are visible. (Recall that you don't need to do this with audio elements created programatically.)
+          </p>
+        </div>
+        <h2>Formats</h2>
+        <div>
+          <p>
+            As with audio, there are several formats available and in development for video, and none is supported by all browsers. These are the current important ones for the Web.
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Format</th>
+                <th>Codecs</th>
+                <th>Legal</th>
+                <th>Browsers</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>MP4</td>
+                <td>
+                  Video: H.264<br />
+                  Audio: AAC
+                </td>
+                <td>Patents not freely licensed</td>
+                <td>IE, Saf, Chr*, FF*, Op*, iOS, And</td>
+                <td>Supported on many devices</td>
+              </tr>
+              <tr>
+                <td>Ogg Theora Vorbis</td>
+                <td>
+                  Video: Theora<br />
+                  Audio: Vorbis
+                </td>
+                <td>Open</td>
+                <td>Chr, FF, Op, And</td>
+                <td>Ogg is container format.</td>
+              </tr>
+              <tr>
+                <td>WebM</td>
+                <td>
+                  Video: VP8 or VP9<br />
+                  Audio: Vorbis or Opus
+                </td>
+                <td>Open</td>
+                <td>Chr, FF, Op, And</td>
+                <td>Generally better compression than Theora</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  Chr=Chrome, FF=FireFox, Op=Opera, IE=Internet Explorer, Saf=Safari, And=Android, *=supported but not recommended
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+          <p>
+            MP4 is supported in recent versions of all major browsers, but developers are strongly encouraged to provide at least WebM as well.
+          </p>
+        </div>
+        <h2>Detecting supported formats</h2>
+        <div>
+          <div class="codeDemo">
+            This will work if our browser &quot;probably&quot; supports WebM, Ogg Theora Vorbis, or MP4:
+            <pre>
+var formats = [
+        { ext: 'webm', mime: 'video/webm' },
+        { ext: 'ogv', mime: 'video/ogg; codecs="theora, vorbis"' },
+        { ext: 'mp4', mime: 'video/mp4' }
+];
+var element = document.createElement( 'video' );
+for ( var f = 0, len = formats.length; f < len; ++f ) {
+    if ( element.canPlayType( formats[ f ].mime ) === 'probably' ) {
+        console.log( formats[ f ].ext + ' is supported, "probably".' );
+    }
+}
+            </pre>
+            <button type="button" class="runCode">Run</button>
+            <p>
+              If that fails, we might check for (and supply) other formats and/or check for &quot;maybe&quot; support.
+            </p>
+          </div>
+        </div>
+        <h2>Example</h2>
+        <div>
+          <p>
+            Here is an example using the video <a href="http://creativecommons.org/videos/wanna-work-together" target="_blank">Wanna Work Together</a>, which explains the <a href="http://creativecommons.org/" target="_blank">Creative Commons</a> licenses. I downloaded the Ogg Theora Vorbis file and used the command-line tool <code>avconv</code> to create WebM and MP4 versions.
+          </p>
+          <div>
+            <div id="videoHolder"></div>
+            <button id="play-video">Play</button>
+            <button id="pause-video">Pause</button>
+            <button id="restart-video">Restart</button>
+            <pre>
+var vid = videos[ 'wannaworktogether' ];
+$('#videoHolder').append( vid );
+$('#play-video').on( 'click',
+    function( ) {
+        vid.play( );
+    } );
+$('#pause-video').on( 'click',
+    function( ) {
+        vid.pause( );
+    } );
+$('#restart-video').on( 'click',
+    function( ) {
+        vid.currentTime = 0;
+    } );
+            </pre>
+            <button type="button" class="runVideoCode">Run</button>
+          </div>
+        </div>
+
       </div>
 
     </div>
