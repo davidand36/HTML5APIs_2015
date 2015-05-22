@@ -14,22 +14,24 @@
       <h1>Introduction</h1>
       <div>
         <p>
-          After some false starts, the WHATWG and W3C are converging on a specification of methods for capturing and access data from cameras and microphones built into, or attached to, many devices, especially mobile ones.
+          Many Web devices, desktop, laptop, and mobile, feature cameras and microphones. This means that images and sound are available as input as well as output. Just as HTML5 makes audio and video output easy, it also enables Web sites to obtain input from these devices.
         </p>
         <p>
-          There, are in fact, a couple approaches available. One, which we will not discuss further, involves a <code>capture</code> attribute which can be applied to DOM form elements. This is called <a href="http://www.w3.org/TR/2013/WD-html-media-capture-20130326/" target="_blank">HTML Media Capture</a>.
+          After several false starts, the W3C has largely settled on on approach, <em>Media Capture and Streams</em>, which allows for fine-grained control of the data with JavaScript, using the <code>getUserMedia()</code> function, which allows streams to be attached to <code>video</code> and <code>audio</code> elements and processed in real time.
         </p>
         <p>
-          For JavaScript programming of Web apps, a more interesting approach is the <code>getUserMedia()</code> function, which allows streams to be attached to <code>video</code> and <code>audio</code> elements and processed in real time.
+          Support is still mixed. Chrome, Firefox, Opera, and Android browsers support the spec, but for Internet Explorer it seems to be coming soon, and there is no support in Safari (Mac or iOS).
         </p>
         <p>
-          As with geolocation, there are obvious privacy and security concerns with providing Web access to data from a user's camera(s) and microphones. Browsers are required to get the user's permission before providing data.
+          There are obvious privacy and security concerns with providing Web access to data from a user's camera(s) and microphones. Browsers are required to get the user's permission before providing data.
         </p>
       </div>
+
       <h1>Specification</h1>
       <div>
         The W3C maintains the specification of Media Capture and Streams at <a href="http://www.w3.org/TR/mediacapture-streams/" target="_blank">http://www.w3.org/TR/mediacapture-streams/</a>.
       </div>
+
       <h1>The user-media API</h1>
       <div class="accordion h2">
         <h2><code>getUserMedia</code></h2>
@@ -116,10 +118,12 @@ else
           </p>
         </div>
       </div>
+
       <h1>Richer example</h1>
       <div>
         <a href="http://epsilondelta.us/RippleCam/" target="_blank">RippleCam</a>
       </div>
+
     </div>
     
     <button type="button" id="accordionToggle"></button>
