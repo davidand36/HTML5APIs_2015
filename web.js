@@ -24,6 +24,10 @@ var plasticAjax = require( plasticAjaxDir + 'PlasticAjaxServer' )(
 var socketChatDir = './server/Examples/SocketChat/';
 var socketChat = require( socketChatDir + 'SocketChatServer' );
 
+var appCacheDemoDir = './server/Examples/AppCache/';
+var appCacheDemo = require( appCacheDemoDir + 'AppCacheServer' )(
+    express, appCacheDemoDir );
+
 //=============================================================================
 
 app.use( favicon( __dirname + '/public/favicon.ico' ) );
@@ -35,6 +39,7 @@ app.use( express.static( __dirname + '/public/' ) );
 
 app.use( '/Examples/PlasticPages/', plasticPages );
 app.use( '/Examples/PlasticAjax/', plasticAjax );
+app.use( '/Examples/AppCache/', appCacheDemo );
 
 var port = Number( process.env.PORT || 6221 );
 var server = app.listen( port,
