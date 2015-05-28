@@ -13,8 +13,10 @@
 var signInHtml = $('#signInTemplate').html();
 var chatRoomHtml = $('#chatRoomTemplate').html();
 
-var socket = io.connect( ); //global provided by socket.io client
-var baseUrl = window.location.pathname;
+// Use global function provided by socket.io client script
+//  to make Socket.IO (probably WebSocket) connection to our server:
+var socket = io( );
+
 var userName = '';
 
 //-----------------------------------------------------------------------------
@@ -25,6 +27,7 @@ start( );
 
 function start( ) {
     showSignIn( );
+    socket.on( 'error', handleSocketError );
 }
 
 //=============================================================================
@@ -76,6 +79,12 @@ function displayMessage( user, message, fromMe ) {
         item.addClass( 'from-me' );
     }
     $('#messages').prepend( item );
+}
+
+//-----------------------------------------------------------------------------
+
+function handleSocketError( error ) {
+    alert( 'Socket.IO error occurred:\n' + JSON.stringify( error ) );
 }
 
 //=============================================================================
