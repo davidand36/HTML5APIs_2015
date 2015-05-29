@@ -19,7 +19,8 @@ var locations = [
     { name: 'Space Needle', lat: 47.6205, lon: -122.3493, zoom: 17 },
     { name: 'Bellevue Botanical Garden', lat: 47.6063, lon: -122.1707, zoom: 16 },
     { name: 'İstanbul', lat: 40.9869, lon: 29.0121, zoom: 11 },
-    { name: 'Yosemite', lat: 37.7310, lon: -119.5733, zoom: 13 }
+    { name: 'Yosemite', lat: 37.7310, lon: -119.5733, zoom: 13 },
+    { name: 'Monmouth', lat: 44.8490, lon: -123.2276, zoom: 14 }
 ];
 
 var maps = [];
