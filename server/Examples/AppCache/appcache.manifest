@@ -5,10 +5,11 @@ CACHE:
 index.html
 AppCache.css
 AppCacheClient.js
+ServerDataFallback.js
 lib/jquery-2.js
-
-FALLBACK:
-ServerData.js ServerDataFallback.js
 
 NETWORK:
 ServerData.js
+
+FALLBACK:
+ServerData.js ServerDataFallback.js
