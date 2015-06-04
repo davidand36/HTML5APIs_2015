@@ -12,13 +12,13 @@ module.exports = function( express, dataDir ) {
 
     //=========================================================================
 
-    router.get( '/manifest.appcache', setManifest );
+    router.get( '/appcache.manifest', setManifest );
     router.get( '/ServerData.js', sendDataJs );
 
     //=========================================================================
 
     function setManifest( request, response ) {
-        var manifestPath = dataDir + 'manifest.appcache';
+        var manifestPath = dataDir + 'appcache.manifest';
         fs.readFile( manifestPath, function( err, data ) {
             if ( err ) {
                 console.log( 'Unable to read ' + manifestPath );
