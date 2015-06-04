@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Version 6
+# Version 7
 
 CACHE:
 index.html
@@ -8,7 +8,7 @@ AppCacheClient.js
 lib/jquery-2.js
 
 FALLBACK:
-ServerData.js  ServerDataFallback.js
+ServerData.js ServerDataFallback.js
 
 NETWORK:
 ServerData.js
